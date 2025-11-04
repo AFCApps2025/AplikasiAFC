@@ -33,8 +33,13 @@ export default defineConfig({
     'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenJyeG1yZ3h1ZWJpbXZreGhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTUwODIsImV4cCI6MjA3MTE5MTA4Mn0.ntXRlLylqiJfA5NbGet1h0977CXPHVCE_G-9OM5R0Wg'),
   },
   build: {
+    commonjsOptions: {
+      transformMixedEsModules: true,
+      include: [/node_modules/],
+    },
     rollupOptions: {
       output: {
+        format: 'es',
         manualChunks: {
           vendor: ['react', 'react-dom'],
           ui: ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-toast'],
@@ -57,10 +62,13 @@ export default defineConfig({
       'react-dom', 
       'react-router-dom',
       '@tanstack/react-query',
+      '@supabase/supabase-js',
       'date-fns',
       'clsx',
       'lucide-react'
     ],
-    exclude: ['@supabase/supabase-js']
+    esbuildOptions: {
+      target: 'es2020',
+    },
   },
 });
