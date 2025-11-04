@@ -103,7 +103,7 @@
       "name": "Jadwal Booking",
       "short_name": "Jadwal",
       "description": "Lihat Jadwal Booking",
-      "url": "/scheduled",
+      "url": "/AplikasiAFC/scheduled",
       "icons": [
         {
           "src": "192.png",
@@ -125,7 +125,7 @@
     }
   ],
   "share_target": {
-    "action": "/work-report",
+    "action": "/AplikasiAFC/work-report",
     "method": "GET",
     "enctype": "application/x-www-form-urlencoded",
     "params": {
