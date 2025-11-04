@@ -34,7 +34,9 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: |
+          rm -rf package-lock.json node_modules
+          npm install --legacy-peer-deps
 
       - name: Build
         run: npm run build
