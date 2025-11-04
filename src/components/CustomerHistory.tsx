@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { supabase } from '../supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { ArrowLeft, User, Wrench, X, Calendar, UserCheck, Hash, Settings } from 'lucide-react';
 
 interface WorkReport {

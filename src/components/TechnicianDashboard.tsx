@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { Calendar, Wrench, TrendingUp, Users } from 'lucide-react';
 
 interface WorkReport {
   id: string;
   teknisi: string;
-  helper: string | null;
+  helper?: string | null;
   tanggal_dikerjakan: string;
   status: string;
   nama_pelanggan: string;
   jenis_pekerjaan: string;
   no_unit: string;
+  [key: string]: any;
 }
 
 interface JobTypeStats {
@@ -73,7 +74,7 @@ const TechnicianDashboard = () => {
   const loadActiveTechCodes = async () => {
     try {
       // Get active technician codes
-      const { data: techData, error: techError } = await supabase
+      const { data: techData, error: techError } = await (supabase as any)
         .from('technician_codes')
         .select('code')
         .eq('active', true);
@@ -172,7 +173,7 @@ const TechnicianDashboard = () => {
       // For helper role, also check what helpers exist in database
       if (role === 'helper' && (!data || data.length === 0)) {
         console.log('=== CHECKING ALL HELPERS IN DATABASE ===');
-        const { data: allReports } = await supabase
+        const { data: allReports } = await (supabase as any)
           .from('work_reports')
           .select('helper')
           .eq('status', 'approved')

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Eye, EyeOff, LogIn, Mail, Smartphone } from 'lucide-react';
-import { supabase } from '../supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 interface User {
   id: string;

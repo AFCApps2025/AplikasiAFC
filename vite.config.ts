@@ -29,6 +29,8 @@ export default defineConfig({
   define: {
     'process.env': {},
     global: 'globalThis',
+    'import.meta.env.VITE_SUPABASE_URL': JSON.stringify('https://xjzrrxmrgxuebimvkxhp.supabase.co'),
+    'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenJyeG1yZ3h1ZWJpbXZreGhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTUwODIsImV4cCI6MjA3MTE5MTA4Mn0.ntXRlLylqiJfA5NbGet1h0977CXPHVCE_G-9OM5R0Wg'),
   },
   build: {
     rollupOptions: {

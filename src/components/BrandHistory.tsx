@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { supabase } from '../supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { ArrowLeft, Calendar, User, Wrench, FileText, Image } from 'lucide-react';
 
 interface Booking {
@@ -46,14 +46,14 @@ const BrandHistory = () => {
       
       // Fetch both bookings and work reports for this phone number and brand
       const [bookingsResult, workReportsResult] = await Promise.all([
-        supabase
+        (supabase as any)
           .from('bookings')
           .select('*')
           .eq('no_hp', phoneNumber)
           .eq('merk', decodedBrand)
           .order('created_at', { ascending: false }),
         
-        supabase
+        (supabase as any)
           .from('work_reports')
           .select('*')
           .eq('no_wa_pelanggan', phoneNumber)

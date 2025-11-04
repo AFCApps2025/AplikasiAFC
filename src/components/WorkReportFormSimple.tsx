@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { supabase } from '../supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -17,7 +17,7 @@ const HelperSelect = ({ value, onChange }: { value: string; onChange: (value: st
   useEffect(() => {
     const fetchHelpers = async () => {
       try {
-        const { data, error } = await supabase
+        const { data, error } = await (supabase as any)
           .from('system_accounts')
           .select('id, name, username')
           .eq('role', 'helper')
@@ -125,7 +125,7 @@ const WorkReportForm = () => {
           
           if (bookingData) {
             // Check if this booking has an existing work report (for komplain cases)
-            const { data: existingReport, error: reportError } = await supabase
+            const { data: existingReport, error: reportError } = await (supabase as any)
               .from('work_reports')
               .select('*')
               .eq('booking_id', bookingData.booking_id)

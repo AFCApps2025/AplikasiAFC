@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from './components/ui/toaster';
-import { supabase } from './supabase';
+import { supabase } from '@/integrations/supabase/client';
 import SimpleLogin from './components/SimpleLogin';
 import NotificationProvider from './components/NotificationProvider';
 import BottomNavigation from './components/BottomNavigation';

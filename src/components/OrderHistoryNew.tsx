@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { History, Search, Filter, User, Eye, Calendar, Phone, MapPin, X, Image, CheckCircle, Clock, Edit, Trash2, ExternalLink, AlertTriangle } from 'lucide-react';
 
 interface Booking {
@@ -102,7 +102,7 @@ const OrderHistoryNew = () => {
         tanggal_selesai: report.tanggal_dikerjakan || '',
         status: 'completed',
         teknisi: report.teknisi || '',
-        helper: report.helper || '',
+        helper: (report as any).helper || '',
         created_at: report.created_at,
         catatan: report.keterangan || '',
         merk: report.merk || '',

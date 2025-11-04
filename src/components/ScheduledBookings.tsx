@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { CalendarClock, Phone, MapPin, User, CheckCircle, Calendar, RefreshCw, X, Clock } from 'lucide-react';
 import { notificationService } from '../utils/notifications';
 
@@ -11,7 +11,7 @@ const TechnicianSelector = ({ value, onChange }: { value: string; onChange: (val
   useEffect(() => {
     const loadTechCodes = async () => {
       try {
-        const { data, error } = await supabase
+        const { data, error } = await (supabase as any)
           .from('technician_codes')
           .select('*')
           .eq('active', true)
