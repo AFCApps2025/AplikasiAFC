@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halaman Booking Lama - AFC</title>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Arvo'>
+  <style>
+    /*======================
+        Booking Redirect page
+    =======================*/
+
+    .page_404{ 
+      padding:40px 0;   
+      background:#fff; 
+      font-family: 'Arvo', serif;
+      min-height: 100vh;
+    }
+
+    .page_404 img{ 
+      width:100%;
+    }
+
+    .four_zero_four_bg{
+      background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+      height: 400px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    } 
+
+    .four_zero_four_bg h1{
+      font-size:80px;
+      color: #16a34a;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    } 
+
+    .four_zero_four_bg h3{
+      font-size:80px;
+    }
+             
+    .link_404{             
+      color: #fff!important;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #16a34a, #059669);
+      margin: 20px 0;
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+    }
+
+    .link_404:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(22, 163, 74, 0.4);
+      color: #fff!important;
+      text-decoration: none;
+    }
+
+    .contant_box_404{ 
+      margin-top:-50px;
+    }
+
+    .redirect-icon {
+      font-size: 60px;
+      color: #16a34a;
+      margin-bottom: 20px;
+    }
+
+    .redirect-message {
+      font-size: 24px;
+      color: #374151;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .redirect-description {
+      font-size: 16px;
+      color: #6b7280;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .four_zero_four_bg h1 {
+        font-size: 60px;
+      }
+      
+      .redirect-message {
+        font-size: 20px;
+      }
+      
+      .redirect-description {
+        font-size: 14px;
+      }
+      
+      .link_404 {
+        padding: 12px 25px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<section class="page_404">
+  <div class="container">
+    <div class="row">  
+      <div class="col-sm-12">
+        <div class="col-sm-10 col-sm-offset-1 text-center">
+          <div class="four_zero_four_bg">
+          </div>
+          
+          <div class="contant_box_404">
+            <div class="redirect-icon">📋</div>
+            
+            <h3 class="redirect-message">
+              404 NOT FOUND PAGE
+            </h3>
+            
+            <p class="redirect-description">
+              Untuk melanjutkan proses booking layanan AC, silakan klik link di bawah ini untuk mengakses halaman booking yang baru.
+            </p>
+            
+            <a href="https://www.aqshafreshncool.com/booking/" class="link_404">
+              🚀 Lanjutkan Booking Disini
+            </a>
+            
+            <div style="margin-top: 30px;">
+              <p style="font-size: 14px; color: #9ca3af;">
+                Anda akan diarahkan ke halaman booking yang telah diperbarui
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Auto redirect after 5 seconds (optional)
+  setTimeout(function() {
+    if (confirm('Apakah Anda ingin diarahkan ke halaman booking yang baru?')) {
+      window.location.href = 'https://www.aqshafreshncool.com/booking/';
+    }
+  }, 5000);
+</script>
+</body>
+</html>

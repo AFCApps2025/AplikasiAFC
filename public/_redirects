@@ -1,0 +1,26 @@
+# Redirect untuk halaman affiliate
+/affiliate  /LP/affiliate.html  200
+/affiliate/*  /LP/affiliate.html  200
+
+# Redirect untuk halaman booking
+/booking  /LP/booking.html  200
+/booking/*  /LP/booking.html  200
+
+# Redirect untuk halaman booking dengan parameter referral (format baru A-0001)
+/bookingAC/:referralCode  /LP/booking.html  200
+
+# Redirect untuk halaman booking tanpa parameter
+/bookingAC  /LP/booking.html  200
+
+# React SPA routes - handle all app routes
+/scheduled  /index.html  200
+/calendar  /index.html  200
+/work-report  /index.html  200
+/work-report-approval  /index.html  200
+/order-history  /index.html  200
+/admin  /index.html  200
+/affiliate-list  /index.html  200
+/jadwal-shalat  /index.html  200
+
+# Fallback untuk semua route React SPA
+/*    /index.html   200

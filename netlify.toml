@@ -1,0 +1,26 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/api/sheets-sync"
+  to = "/.netlify/functions/sheets-sync"
+  status = 200
+
+[[redirects]]
+  from = "/affiliate"
+  to = "/bookingafc.html/affiliate.html"
+  status = 200
+
+[[redirects]]
+  from = "/affiliate/*"
+  to = "/bookingafc.html/affiliate.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

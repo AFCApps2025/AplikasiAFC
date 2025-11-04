@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affiliate AFC - Daftar Sekarang</title>
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e8f5e8 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .benefits-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid #e8f5e8;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid #e8f5e8;
+        }
+        
+        .main-title {
+            font-size: 28px;
+            color: #2d5016;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .form-title {
+            font-size: 24px;
+            color: #2d5016;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .form-subtitle {
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e8 100%);
+            border-radius: 12px;
+            border-left: 4px solid #28a745;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.15);
+        }
+
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .benefit-icon::before {
+            content: "🎯";
+            font-size: 20px;
+        }
+
+        .benefit-item:nth-child(2) .benefit-icon::before { content: "🌐"; }
+        .benefit-item:nth-child(3) .benefit-icon::before { content: "📈"; }
+        .benefit-item:nth-child(4) .benefit-icon::before { content: "⭐"; }
+        .benefit-item:nth-child(5) .benefit-icon::before { content: "✅"; }
+        .benefit-item:nth-child(6) .benefit-icon::before { content: "💎"; }
+
+        .benefit-content h3 {
+            color: #2d5016;
+            font-size: 16px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .benefit-content p {
+            color: #6c757d;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2d5016;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e8f5e8;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #28a745;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+        }
+
+        .form-group input:disabled {
+            background: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #fd7e14 0%, #e67e22 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(253, 126, 20, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .terms-text {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .terms-text a {
+            color: #fd7e14;
+            text-decoration: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #6c757d;
+            margin-top: 10px;
+        }
+
+        /* Firework Animation Styles */
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: fireworkExplode 2s ease-out forwards;
+        }
+
+        @keyframes fireworkExplode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .firework-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            animation: particleMove 2s ease-out forwards;
+        }
+
+        @keyframes particleMove {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .star {
+            position: absolute;
+            font-size: 20px;
+            animation: starFall 3s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes starFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .success-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            z-index: 10000;
+            border: 3px solid #28a745;
+            max-width: 90vw;
+            max-height: 90vh;
+            width: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .success-popup.show {
+            animation: popupShow 0.5s ease-out forwards;
+        }
+
+        @keyframes popupShow {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-popup h3 {
+            color: #28a745;
+            font-size: 24px;
+            margin-bottom: 15px;
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 10px 0;
+            z-index: 1;
+        }
+
+        .success-popup p {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .success-popup .close-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: sticky;
+            bottom: 0;
+            margin-top: 20px;
+            z-index: 1;
+        }
+
+        .success-popup .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        /* QR Code Styles */
+        .qr-container {
+            margin: 20px 0;
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px dashed #28a745;
+        }
+
+        .qr-container h4 {
+            color: #2d5016;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        #qrcode {
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .qr-url {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #6c757d;
+            word-break: break-all;
+            margin: 10px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        .download-qr-btn {
+            background: linear-gradient(135deg, #fd7e14 0%, #e67e22 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .download-qr-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(253, 126, 20, 0.3);
+        }
+
+        /* Error message styles */
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Mobile Benefits Toggle */
+        .benefits-toggle {
+            display: none;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            width: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .benefits-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .benefits-toggle::after {
+            content: "▼";
+            position: absolute;
+            right: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .benefits-toggle.active::after {
+            transform: rotate(180deg);
+        }
+
+        .benefits-content {
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .benefits-section,
+            .form-section {
+                padding: 20px;
+            }
+
+            .success-popup {
+                padding: 30px 20px;
+                width: 90%;
+            }
+
+            /* Show toggle button on mobile */
+            .benefits-toggle {
+                display: block;
+            }
+
+            /* Hide benefits content by default on mobile */
+            .benefits-content {
+                display: none;
+                opacity: 0;
+                max-height: 0;
+                overflow: hidden;
+            }
+
+            .benefits-content.show {
+                display: block;
+                opacity: 1;
+                max-height: 1000px;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Celebration Overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay"></div>
+
+    <!-- Success Popup -->
+    <div class="success-popup" id="successPopup">
+        <h3>🎉 Selamat!</h3>
+        <div id="successMessage">
+            <p><strong>Pendaftaran Affiliate AFC Berhasil!</strong></p>
+            <br>
+            <p>Alhamdulillah, Anda telah resmi bergabung sebagai Affiliate AFC.</p>
+            <br>
+            <p>📱 <strong>Pesan detail dan link affiliate telah dikirim ke WhatsApp Anda.</strong></p>
+            <br>
+            <div class="qr-container">
+                <h4>🔗 QR Code Link Affiliate Anda</h4>
+                <div id="qrcode"></div>
+                <div class="qr-url" id="qrUrl"></div>
+                <button class="download-qr-btn" onclick="downloadQRCode()">📥 Download QR Code</button>
+            </div>
+            <br>
+            <p>Silakan cek WhatsApp untuk informasi lengkap tentang program affiliate dan mulai bagikan link Anda untuk mendapatkan komisi.</p>
+        </div>
+        <button class="close-btn" onclick="closeSuccessPopup()">Tutup</button>
+    </div>
+
+    <div class="container">
+        <!-- Benefits Section -->
+        <div class="benefits-section">
+            <h1 class="main-title">Benefit menjadi Affiliate Aqsha Fresh and Cool AFC</h1>
+            
+            <!-- Mobile Toggle Button -->
+            <button class="benefits-toggle" id="benefitsToggle">
+                Lihat Keuntungan Affiliate
+            </button>
+            
+            <div class="benefits-content" id="benefitsContent">
+            <div class="benefit-item">
+                <div class="benefit-icon"></div>
+                <div class="benefit-content">
+                    <h3>GRATIS tidak ada biaya pendaftaran dan membership</h3>
+                    <p>Bergabung tanpa dipungut biaya apapun</p>
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <div class="benefit-icon"></div>
+                <div class="benefit-content">
+                    <h3>Mudah & praktis, cukup share link ke orang yang Anda kenal</h3>
+                    <p>Sistem yang simpel dan mudah digunakan</p>
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <div class="benefit-icon"></div>
+                <div class="benefit-content">
+                    <h3>Komisi menarik dan dapat ditukar dengan layanan GRATIS</h3>
+                    <p>Dapatkan keuntungan finansial atau layanan gratis</p>
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <div class="benefit-icon"></div>
+                <div class="benefit-content">
+                    <h3>Dukungan penuh dari customer support AFC</h3>
+                    <p>Tim support siap membantu kapan saja</p>
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <div class="benefit-icon"></div>
+                <div class="benefit-content">
+                    <h3>Platform digital terpercaya dan akurat</h3>
+                    <p>Teknologi modern yang dapat diandalkan</p>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <h2 class="form-title">Daftar Sekarang</h2>
+            <p class="form-subtitle">Isi form di bawah untuk bergabung sebagai affiliate AFC</p>
+
+            <form id="partnerForm">
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage"></div>
+                
+                <div class="form-group">
+                    <label for="partnerId">ID Affiliate *</label>
+                    <input type="text" id="partnerId" name="partnerId" readonly disabled placeholder="Akan dibuat otomatis">
+                </div>
+
+                <div class="form-group">
+                    <label for="namaLengkap">Nama Lengkap *</label>
+                    <input type="text" id="namaLengkap" name="namaLengkap" placeholder="Masukkan nama lengkap Anda" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nomorWhatsApp">Nomor WhatsApp *</label>
+                    <input type="tel" id="nomorWhatsApp" name="nomorWhatsApp" placeholder="08123456789" required>
+                </div>
+
+
+                <div class="terms-section">
+                    <div class="terms-details">
+                        <h4 style="color: #2d5016; margin-bottom: 15px; font-size: 16px; font-weight: 600;">Syarat dan Ketentuan Program Affiliate AFC:</h4>
+                        <ul style="color: #6c757d; font-size: 14px; line-height: 1.6; margin-bottom: 20px; padding-left: 20px;">
+                            <li>Setiap mereferensikan orang menjadi customer AFC maka akan mendapat 1 poin atau senilai Rp 50.000</li>
+                            <li>Satu orang affiliate hanya dapat mereferensikan satu customer dan tidak dapat mereferensikan ulang customer yang sama</li>
+                            <li>Customer yang sudah pernah direferensikan tidak dapat didaftarkan lagi oleh affiliate yang berbeda</li>
+                            <li>Poin affiliate baru muncul setelah orderan/booking customer tsb selesai dikerjakan oleh tim AFC</li>
+                            <li>Poin dapat ditukar dengan cuci AC GRATIS (1 poin 1 unit AC)</li>
+                            <li>Jumlah poin yang bisa diklaim/dicairkan dalam bentuk tunai minimal berjumlah 10 poin</li>
+                            <li>Pembayaran/pencairan poin dilakukan setiap hari Jumat</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="checkbox-container" style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required style="margin-right: 10px; margin-top: 3px; transform: scale(1.2);">
+                        <label for="agreeTerms" style="color: #2d5016; font-size: 14px; font-weight: 500; cursor: pointer;">
+                            Saya telah membaca dan menyetujui syarat dan ketentuan program affiliate AFC di atas
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    DAFTAR SEKARANG
+                </button>
+
+                <div class="loading" id="loadingText">
+                    Sedang memproses pendaftaran...
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Generate partner ID dengan format A-0004, A-0005, dst (berurutan)
+        function generatePartnerId() {
+            // Ambil partner ID terakhir dari localStorage atau mulai dari 4
+            let lastId = localStorage.getItem('lastPartnerId');
+            if (!lastId) {
+                lastId = 3; // Mulai dari 3, sehingga ID pertama adalah 4
+            } else {
+                lastId = parseInt(lastId);
+            }
+            
+            const newId = lastId + 1;
+            const paddedId = String(newId).padStart(4, '0');
+            return `A-${paddedId}`;
+        }
+
+        // Set partner ID saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('partnerId').value = generatePartnerId();
+        });
+
+        // Create firework animation
+        function createFireworkAnimation() {
+            const overlay = document.getElementById('celebrationOverlay');
+            overlay.style.display = 'block';
+            
+            const colors = ['#FFD700', '#FF6347', '#32CD32', '#1E90FF', '#FF69B4', '#FFA500', '#9370DB', '#00CED1'];
+            
+            // Create multiple fireworks
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    createSingleFirework(overlay, colors);
+                }, i * 300);
+            }
+            
+            // Hide overlay after all animations
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                overlay.innerHTML = ''; // Clear all fireworks
+            }, 4000);
+        }
+
+        function createSingleFirework(overlay, colors) {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * (window.innerHeight * 0.6) + (window.innerHeight * 0.2);
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Create center explosion
+            const center = document.createElement('div');
+            center.className = 'firework';
+            center.style.left = x + 'px';
+            center.style.top = y + 'px';
+            center.style.backgroundColor = color;
+            center.style.boxShadow = `0 0 10px ${color}`;
+            overlay.appendChild(center);
+            
+            // Create particles
+            const particleCount = 20;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'firework-particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.backgroundColor = color;
+                particle.style.boxShadow = `0 0 5px ${color}`;
+                
+                // Random direction for particle
+                const angle = (i / particleCount) * 2 * Math.PI;
+                const distance = Math.random() * 100 + 50;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+                
+                particle.style.setProperty('--dx', dx + 'px');
+                particle.style.setProperty('--dy', dy + 'px');
+                
+                overlay.appendChild(particle);
+                
+                // Remove particle after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 2000);
+            }
+            
+            // Remove center after animation
+            setTimeout(() => {
+                if (center.parentNode) {
+                    center.parentNode.removeChild(center);
+                }
+            }, 2000);
+        }
+
+
+        // Generate QR code using QRious library
+        function generateQRCode(text) {
+            try {
+                const canvas = document.createElement('canvas');
+                const qr = new QRious({
+                    element: canvas,
+                    value: text,
+                    size: 200,
+                    foreground: '#2d5016',
+                    background: '#ffffff',
+                    level: 'M'
+                });
+                return canvas;
+            } catch (error) {
+                console.error('QR Code generation error:', error);
+                return null;
+            }
+        }
+
+        // Show success popup with QR code
+        async function showSuccessPopup(partnerId, affiliateLink) {
+            console.log('showSuccessPopup called with:', partnerId, affiliateLink);
+            
+            // Clear previous QR code
+            const qrContainer = document.getElementById('qrcode');
+            if (qrContainer) {
+                qrContainer.innerHTML = '';
+            }
+            
+            // Generate QR code
+            const qrCanvas = await generateQRCode(affiliateLink);
+            if (qrCanvas) {
+                qrCanvas.style.border = '2px solid #2d5016';
+                qrCanvas.style.borderRadius = '8px';
+                qrContainer.appendChild(qrCanvas);
+                
+                // Store canvas for download
+                window.currentQRCanvas = qrCanvas;
+                
+                console.log('QR code generated successfully for:', affiliateLink);
+            } else {
+                qrContainer.innerHTML = '<p style="color: red;">Gagal generate QR Code</p>';
+            }
+            
+            // Set URL text
+            const qrUrlElement = document.getElementById('qrUrl');
+            if (qrUrlElement) {
+                qrUrlElement.textContent = affiliateLink;
+            }
+            
+            // Show popup
+            const popup = document.getElementById('successPopup');
+            if (popup) {
+                popup.style.display = 'block';
+                popup.style.zIndex = '10000';
+                setTimeout(() => {
+                    popup.classList.add('show');
+                    console.log('Success popup shown');
+                }, 100);
+            } else {
+                console.error('Success popup element not found');
+            }
+        }
+
+        // Download QR Code function
+        function downloadQRCode() {
+            if (window.currentQRCanvas) {
+                const link = document.createElement('a');
+                link.download = `AFC-QR-${document.getElementById('partnerId').value}.png`;
+                link.href = window.currentQRCanvas.toDataURL('image/png');
+                link.click();
+                console.log('QR Code downloaded');
+            } else {
+                alert('QR Code belum tersedia untuk didownload');
+            }
+        }
+
+
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            
+            // Hide error after 5 seconds
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
+        }
+
+        // Check if phone number already exists
+        async function checkDuplicatePhone(phoneNumber) {
+            try {
+                const supabaseUrl = 'https://xjzrrxmrgxuebimvkxhp.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenJyeG1yZ3h1ZWJpbXZreGhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTUwODIsImV4cCI6MjA3MTE5MTA4Mn0.ntXRlLylqiJfA5NbGet1h0977CXPHVCE_G-9OM5R0Wg';
+
+                const response = await fetch(`${supabaseUrl}/rest/v1/partners?nomor_whatsapp=eq.${phoneNumber}&select=partner_id,nama_lengkap`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Gagal memeriksa data');
+                }
+
+                const data = await response.json();
+                return data.length > 0 ? data[0] : null;
+            } catch (error) {
+                console.error('Error checking duplicate:', error);
+                return null;
+            }
+        }
+
+        // Close success popup
+        function closeSuccessPopup() {
+            const popup = document.getElementById('successPopup');
+            popup.classList.remove('show');
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 300);
+        }
+
+        // Handle form submission
+        document.getElementById('partnerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.querySelector('.submit-btn');
+            const loadingText = document.getElementById('loadingText');
+            
+            const namaLengkap = document.getElementById('namaLengkap').value;
+            const nomorWhatsApp = document.getElementById('nomorWhatsApp').value;
+            const partnerId = document.getElementById('partnerId').value;
+
+            // Validasi form
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            if (!namaLengkap || !nomorWhatsApp) {
+                showError('Mohon lengkapi semua field yang wajib diisi');
+                return;
+            }
+            
+            if (!agreeTerms) {
+                showError('Mohon setujui syarat dan ketentuan terlebih dahulu');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.style.display = 'none';
+            loadingText.style.display = 'block';
+
+            try {
+                // Format nomor WhatsApp
+                let formattedPhone = nomorWhatsApp.replace(/\D/g, ''); // Hapus semua karakter non-digit
+                
+                // Handle berbagai format input
+                if (formattedPhone.startsWith('0')) {
+                    // 08123456789 -> 628123456789
+                    formattedPhone = '62' + formattedPhone.substring(1);
+                } else if (formattedPhone.startsWith('62')) {
+                    // 628123456789 -> tetap 628123456789
+                    formattedPhone = formattedPhone;
+                } else if (formattedPhone.startsWith('8')) {
+                    // 8123456789 -> 628123456789
+                    formattedPhone = '62' + formattedPhone;
+                } else {
+                    // Format lain, tambahkan 62 di depan
+                    formattedPhone = '62' + formattedPhone;
+                }
+                
+                console.log('Original phone:', nomorWhatsApp);
+                console.log('Formatted phone:', formattedPhone);
+
+                // Check for duplicate phone number
+                const existingPartner = await checkDuplicatePhone(formattedPhone);
+                if (existingPartner) {
+                    showError(`Nomor WhatsApp ini sudah terdaftar sebagai affiliate dengan ID: ${existingPartner.partner_id} atas nama: ${existingPartner.nama_lengkap}. Setiap nomor WhatsApp hanya bisa mendaftar sekali.`);
+                    submitBtn.style.display = 'block';
+                    loadingText.style.display = 'none';
+                    return;
+                }
+
+                // Generate affiliate link dengan parameter ?ref=
+                const affiliateLink = `https://aqma2025.github.io/bookingAC/?ref=${partnerId}`;
+
+                // Simpan data ke Supabase
+                const supabaseUrl = 'https://xjzrrxmrgxuebimvkxhp.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenJyeG1yZ3h1ZWJpbXZreGhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTUwODIsImV4cCI6MjA3MTE5MTA4Mn0.ntXRlLylqiJfA5NbGet1h0977CXPHVCE_G-9OM5R0Wg';
+
+                // Insert data ke table partners
+                const supabaseResponse = await fetch(`${supabaseUrl}/rest/v1/partners`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': supabaseKey,
+                        'Authorization': `Bearer ${supabaseKey}`,
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        partner_id: partnerId,
+                        nama_lengkap: namaLengkap,
+                        nomor_whatsapp: formattedPhone,
+                        affiliate_link: affiliateLink,
+                        status: 'active'
+                    })
+                });
+
+                if (!supabaseResponse.ok) {
+                    const errorData = await supabaseResponse.text();
+                    console.error('Supabase error:', errorData);
+                    throw new Error('Gagal menyimpan data ke database');
+                }
+
+                // Kirim notifikasi WhatsApp
+                const message = `Assalamualaikum 
+
+Selamat ya *${namaLengkap}*!
+Alhamdulillah, kamu resmi bergabung sebagai *Affiliate AFC (Aqsha Fresh & Cool)* 
+
+Mulai sekarang, setiap langkah kecilmu bisa jadi jalan rejeki halal & keberkahan.
+Setiap kali kamu rekomendasikan layanan AFC dan ada customer yang closing, kamu akan dapat:
+
+💰 Komisi Rp 50.000 atau gratis cuci 1 unit AC.
+🎁 Customer yang kamu bawa juga langsung dapat bonus Free Cek/Pemeriksaan Unit senilai Rp 150.000 + promo cuci 2 gratis 1 (berlaku kelipatan).
+
+Berikut *link affiliate pribadi* kamu, silakan sebarkan ke teman, saudara, tetangga, atau rekan kerja:
+🔗 *${affiliateLink}*
+
+Raih keberkahan bersama AFC dengan menebarkan manfaat melalui rekomendasi sederhana ini.
+
+*Aqsha Fresh & Cool*`;
+
+                const whatsappResponse = await fetch('https://crm.woo-wa.com/send/message-text', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        deviceId: "d_ID@6753a3309becd_BGhPsyGyyZujb",
+                        number: formattedPhone,
+                        message: message,
+                    }),
+                });
+
+                if (!whatsappResponse.ok) {
+                    console.warn('WhatsApp notification failed, but registration successful');
+                }
+
+                // Update last partner ID di localStorage
+                localStorage.setItem('lastPartnerId', partnerId.split('-')[1]);
+
+                // Start firework animation
+                createFireworkAnimation();
+                
+                // Show success popup immediately after successful registration
+                setTimeout(() => {
+                    showSuccessPopup(partnerId, affiliateLink);
+                }, 500);
+                
+                // Reset form after showing popup
+                setTimeout(() => {
+                    document.getElementById('partnerForm').reset();
+                    // Generate partner ID baru untuk form berikutnya
+                    document.getElementById('partnerId').value = generatePartnerId();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mendaftar. Silakan coba lagi.');
+            } finally {
+                // Hide loading state
+                setTimeout(() => {
+                    submitBtn.style.display = 'block';
+                    loadingText.style.display = 'none';
+                }, 2000); // Delay to ensure popup shows first
+            }
+        });
+
+        // Format nomor WhatsApp saat mengetik
+        document.getElementById('nomorWhatsApp').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Hapus semua karakter non-digit
+            
+            // Format dengan pemisah untuk readability
+            if (value.length > 0) {
+                if (value.startsWith('62')) {
+                    // Format: 62-812-3456-789
+                    value = value.replace(/(\d{2})(\d{3})(\d{4})(\d{0,3})/, '$1-$2-$3-$4');
+                } else if (value.startsWith('0')) {
+                    // Format: 0812-3456-789
+                    value = value.replace(/(\d{4})(\d{4})(\d{0,3})/, '$1-$2-$3');
+                }
+            }
+            
+            e.target.value = value;
+        });
+
+        // Toggle benefits visibility on mobile
+        document.getElementById('benefitsToggle').addEventListener('click', function() {
+            const content = document.getElementById('benefitsContent');
+            const button = document.getElementById('benefitsToggle');
+            
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                button.classList.remove('active');
+                button.textContent = 'Lihat Keuntungan Affiliate';
+            } else {
+                content.classList.add('show');
+                button.classList.add('active');
+                button.textContent = 'Tutup Keuntungan Affiliate';
+            }
+        });
+    </script>
+</body>
+</html>
