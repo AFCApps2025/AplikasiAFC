@@ -154,7 +154,7 @@ const WorkReportForm = () => {
                 bookingUnitCount: existingUnits.length || bookingData.jumlah_unit || 1,
                 units: existingUnits.length > 0 ? existingUnits : [{
                   noUnit: '',
-                  merk: bookingData.merk || '',
+                  merk: '',
                   merkLain: '',
                   spekUnit: '',
                   keterangan: '',
@@ -179,7 +179,7 @@ const WorkReportForm = () => {
               const unitCount = bookingData.jumlah_unit || 1;
               const initialUnits = Array.from({ length: unitCount }, () => ({
                 noUnit: '',
-                merk: bookingData.merk || '',
+                merk: '',
                 merkLain: '',
                 spekUnit: '',
                 keterangan: '',
@@ -246,7 +246,7 @@ const WorkReportForm = () => {
                 merkLain: '',
                 spekUnit: rejectedReport.spek_unit || '',
                 keterangan: rejectedReport.keterangan || '',
-                internalNotes: rejectedReport.catatan_internal || ''
+                internalNotes: rejectedReport.internal_notes || ''
               }] : prev.units,
               workTypes: rejectedReport.jenis_pekerjaan ? [{
                 jenisPekerjaan: rejectedReport.jenis_pekerjaan

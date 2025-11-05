@@ -8,7 +8,6 @@ import NotificationProvider from './components/NotificationProvider';
 import BottomNavigation from './components/BottomNavigation';
 
 // Lazy load components for better performance
-const Dashboard = lazy(() => import('./pages/Dashboard'));
 const SimpleBookingDashboard = lazy(() => import('./components/SimpleBookingDashboard'));
 const ScheduledBookings = lazy(() => import('./components/ScheduledBookings'));
 const BookingCalendar = lazy(() => import('./components/BookingCalendar'));
@@ -507,7 +506,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <NotificationProvider>
-        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <Router basename="/AplikasiAFC" future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-orange-50">
             <Navigation currentUser={currentUser} onLogout={handleLogout} />
             <main className="pt-20 pb-20 px-2 sm:px-4 w-full min-h-screen" style={{ paddingTop: '80px' }}>

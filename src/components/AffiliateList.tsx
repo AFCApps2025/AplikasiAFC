@@ -7,18 +7,16 @@ import { Input } from './ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 interface Partner {
-  id: number;
   partner_id: string;
   nama_lengkap: string;
   nomor_whatsapp: string;
-  affiliate_link: string;
-  status: string;
-  total_referrals: number;
-  total_poin: number;
-  total_komisi: number;
+  email: string | null;
+  alamat: string | null;
+  tanggal_bergabung: string;
+  status: string | null;
+  total_poin: number | null;
   created_at: string;
   updated_at: string;
-  agama?: string;
 }
 
 const AffiliateList = () => {
@@ -92,7 +90,6 @@ const AffiliateList = () => {
   const totalPartners = partners.length;
   const activePartners = partners.filter(p => p.status === 'active').length;
   const totalPoin = partners.reduce((sum, p) => sum + (p.total_poin || 0), 0);
-  const totalKomisi = partners.reduce((sum, p) => sum + (p.total_komisi || 0), 0);
 
   if (loading) {
     return (
@@ -118,7 +115,7 @@ const AffiliateList = () => {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -151,18 +148,6 @@ const AffiliateList = () => {
                 <p className="text-2xl font-bold">{totalPoin}</p>
               </div>
               <TrendingUp className="h-8 w-8 text-orange-200" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-100 text-sm">Total Komisi</p>
-                <p className="text-xl font-bold">{formatCurrency(totalKomisi)}</p>
-              </div>
-              <Award className="h-8 w-8 text-purple-200" />
             </div>
           </CardContent>
         </Card>
@@ -216,7 +201,7 @@ const AffiliateList = () => {
           </Card>
         ) : (
           filteredPartners.map((partner) => (
-            <Card key={partner.id} className="shadow-lg hover:shadow-xl transition-shadow">
+            <Card key={partner.partner_id} className="shadow-lg hover:shadow-xl transition-shadow">
               <CardContent className="p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                   <div className="flex-1">
@@ -247,10 +232,10 @@ const AffiliateList = () => {
                         <span className="font-medium">{formatDate(partner.created_at)}</span>
                       </div>
                       
-                      {partner.agama && (
+                      {partner.email && (
                         <div className="flex items-center gap-2">
-                          <span className="text-gray-600">Agama:</span>
-                          <span className="font-medium">{partner.agama}</span>
+                          <span className="text-gray-600">Email:</span>
+                          <span className="font-medium">{partner.email}</span>
                         </div>
                       )}
                     </div>
@@ -263,21 +248,14 @@ const AffiliateList = () => {
                       </div>
                       <div className="text-xs text-gray-500">Total Poin</div>
                     </div>
-                    
-                    <div className="text-center">
-                      <div className="text-lg font-bold text-green-600">
-                        {formatCurrency(partner.total_komisi || 0)}
-                      </div>
-                      <div className="text-xs text-gray-500">Komisi</div>
-                    </div>
                   </div>
                 </div>
                 
-                {partner.affiliate_link && (
+                {partner.alamat && (
                   <div className="mt-4 pt-4 border-t">
-                    <div className="text-xs text-gray-500 mb-1">Link Affiliasi:</div>
-                    <div className="text-sm font-mono bg-gray-50 p-2 rounded break-all">
-                      {partner.affiliate_link}
+                    <div className="text-xs text-gray-500 mb-1">Alamat:</div>
+                    <div className="text-sm bg-gray-50 p-2 rounded">
+                      {partner.alamat}
                     </div>
                   </div>
                 )}
