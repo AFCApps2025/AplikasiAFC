@@ -122,8 +122,8 @@
     <script type="module" src="/src/main.tsx"></script>
     
     <script>
-      // Service Worker Registration with Update Notification
-      if ('serviceWorker' in navigator) {
+      // Service Worker Registration with Update Notification - DISABLED for now
+      if (false && 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/AplikasiAFC/sw.js')
             .then((registration) => {
