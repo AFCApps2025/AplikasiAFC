@@ -40,10 +40,10 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        inlineDynamicImports: true,
       },
     },
-    chunkSizeWarningLimit: 2000,
+    chunkSizeWarningLimit: 3000,
     minify: 'esbuild',
   },
   optimizeDeps: {
