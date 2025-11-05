@@ -35,32 +35,15 @@ export default defineConfig({
     'exports': {},
   },
   build: {
-    commonjsOptions: {
-      transformMixedEsModules: true,
-      include: [/node_modules/],
-    },
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
     rollupOptions: {
       output: {
-        format: 'es',
-        inlineDynamicImports: false,
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-toast'],
-          supabase: ['@supabase/supabase-js'],
-          utils: ['date-fns', 'clsx', 'class-variance-authority'],
-          icons: ['lucide-react'],
-          router: ['react-router-dom'],
-          query: ['@tanstack/react-query']
-        },
-        globals: {
-          'module': 'module',
-          'exports': 'exports'
-        }
+        manualChunks: undefined,
       },
     },
-    chunkSizeWarningLimit: 1000,
-    target: ['es2020', 'chrome80', 'firefox78', 'safari14'],
-    polyfillModulePreload: false,
+    chunkSizeWarningLimit: 2000,
     minify: 'esbuild',
   },
   optimizeDeps: {
