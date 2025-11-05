@@ -31,6 +31,8 @@ export default defineConfig({
     global: 'globalThis',
     'import.meta.env.VITE_SUPABASE_URL': JSON.stringify('https://xjzrrxmrgxuebimvkxhp.supabase.co'),
     'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqenJyeG1yZ3h1ZWJpbXZreGhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTUwODIsImV4cCI6MjA3MTE5MTA4Mn0.ntXRlLylqiJfA5NbGet1h0977CXPHVCE_G-9OM5R0Wg'),
+    'module': {},
+    'exports': {},
   },
   build: {
     commonjsOptions: {
@@ -40,6 +42,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         format: 'es',
+        inlineDynamicImports: false,
         manualChunks: {
           vendor: ['react', 'react-dom'],
           ui: ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-toast'],
@@ -49,6 +52,10 @@ export default defineConfig({
           router: ['react-router-dom'],
           query: ['@tanstack/react-query']
         },
+        globals: {
+          'module': 'module',
+          'exports': 'exports'
+        }
       },
     },
     chunkSizeWarningLimit: 1000,

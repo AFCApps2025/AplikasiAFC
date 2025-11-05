@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from './components/ui/toaster';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,6 +8,7 @@ import NotificationProvider from './components/NotificationProvider';
 import BottomNavigation from './components/BottomNavigation';
 
 // Lazy load components for better performance
+const Dashboard = lazy(() => import('./pages/Dashboard'));
 const SimpleBookingDashboard = lazy(() => import('./components/SimpleBookingDashboard'));
 const ScheduledBookings = lazy(() => import('./components/ScheduledBookings'));
 const BookingCalendar = lazy(() => import('./components/BookingCalendar'));
@@ -46,7 +47,7 @@ const LoadingSpinner = () => (
   </div>
 );
 
-const Navigation = ({ currentUser }: { currentUser: any }) => {
+const Navigation = ({ currentUser, onLogout }: { currentUser: any; onLogout: () => void }) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(() => {
@@ -68,8 +69,7 @@ const Navigation = ({ currentUser }: { currentUser: any }) => {
   }, [soundEnabled]);
   
   const handleLogout = () => {
-    localStorage.removeItem('currentUser');
-    window.location.reload();
+    onLogout();
   };
 
   const toggleMenu = () => {
@@ -330,10 +330,7 @@ const Navigation = ({ currentUser }: { currentUser: any }) => {
                     
                     {/* Enhanced Logout Button */}
                     <button
-                      onClick={() => {
-                        closeMenu();
-                        handleLogout();
-                      }}
+                      onClick={handleLogout}
                       className="group flex items-center justify-between px-4 py-3 text-sm font-medium text-red-600 hover:bg-gradient-to-r hover:from-red-50/50 hover:to-transparent transition-all duration-300 w-full text-left hover:scale-[1.02] hover:translate-x-2"
                       style={{
                         animation: `slideInStagger 0.5s ease-out ${(navigationItems.length + (currentUser?.role === 'admin' ? 1 : 0)) * 0.1}s both`
@@ -512,7 +509,7 @@ const App = () => {
       <NotificationProvider>
         <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-orange-50">
-            <Navigation currentUser={currentUser} />
+            <Navigation currentUser={currentUser} onLogout={handleLogout} />
             <main className="pt-20 pb-20 px-2 sm:px-4 w-full min-h-screen" style={{ paddingTop: '80px' }}>
               <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
