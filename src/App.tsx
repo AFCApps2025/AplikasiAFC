@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from './components/ui/toaster';
@@ -7,20 +7,20 @@ import SimpleLogin from './components/SimpleLogin';
 import NotificationProvider from './components/NotificationProvider';
 import BottomNavigation from './components/BottomNavigation';
 
-// Lazy load components for better performance
-const SimpleBookingDashboard = lazy(() => import('./components/SimpleBookingDashboard'));
-const ScheduledBookings = lazy(() => import('./components/ScheduledBookings'));
-const BookingCalendar = lazy(() => import('./components/BookingCalendar'));
-const WorkReportForm = lazy(() => import('./components/WorkReportFormSimple'));
-const WorkReportApproval = lazy(() => import('./components/WorkReportApproval'));
-const OrderHistoryNew = lazy(() => import('./components/OrderHistoryNew'));
-const DetailOrder = lazy(() => import('./components/DetailOrder'));
-const AdminPanel = lazy(() => import('./components/AdminPanel'));
-const CustomerHistory = lazy(() => import('./components/CustomerHistory'));
-const BrandHistory = lazy(() => import('./components/BrandHistory'));
-const TechnicianDashboard = lazy(() => import('./components/TechnicianDashboard'));
-const JadwalShalatPage = lazy(() => import('./components/JadwalShalatPage'));
-const AffiliateList = lazy(() => import('./components/AffiliateList'));
+// Direct imports for GitHub Pages compatibility
+import SimpleBookingDashboard from './components/SimpleBookingDashboard';
+import ScheduledBookings from './components/ScheduledBookings';
+import BookingCalendar from './components/BookingCalendar';
+import WorkReportForm from './components/WorkReportFormSimple';
+import WorkReportApproval from './components/WorkReportApproval';
+import OrderHistoryNew from './components/OrderHistoryNew';
+import DetailOrder from './components/DetailOrder';
+import AdminPanel from './components/AdminPanel';
+import CustomerHistory from './components/CustomerHistory';
+import BrandHistory from './components/BrandHistory';
+import TechnicianDashboard from './components/TechnicianDashboard';
+import JadwalShalatPage from './components/JadwalShalatPage';
+import AffiliateList from './components/AffiliateList';
 import { Calendar, Home, FileText, History, Users, ClipboardList, CalendarClock, Settings, LogOut, Package, Menu, X, Bell, CheckCircle, BarChart3 } from "lucide-react";
 import { notificationService } from './utils/notifications';
 
@@ -36,15 +36,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Loading component for Suspense
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-      <p className="text-gray-600">Memuat...</p>
-    </div>
-  </div>
-);
 
 const Navigation = ({ currentUser, onLogout }: { currentUser: any; onLogout: () => void }) => {
   const location = useLocation();
@@ -510,7 +501,6 @@ const App = () => {
           <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-orange-50">
             <Navigation currentUser={currentUser} onLogout={handleLogout} />
             <main className="pt-20 pb-20 px-2 sm:px-4 w-full min-h-screen" style={{ paddingTop: '80px' }}>
-              <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
                 {currentUser?.role !== 'helper' && (
                   <Route path="/" element={<SimpleBookingDashboard />} />
@@ -541,7 +531,6 @@ const App = () => {
                   <Route path="/affiliate-list" element={<AffiliateList />} />
                 )}
                 </Routes>
-              </Suspense>
             </main>
             <BottomNavigation />
           </div>
