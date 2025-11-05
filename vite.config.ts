@@ -41,7 +41,13 @@ export default defineConfig({
     rollupOptions: {
       output: {
         inlineDynamicImports: true,
+        manualChunks: undefined,
       },
+      external: [],
+    },
+    commonjsOptions: {
+      include: [/node_modules/],
+      transformMixedEsModules: true,
     },
     chunkSizeWarningLimit: 3000,
     minify: 'esbuild',
@@ -50,6 +56,8 @@ export default defineConfig({
     include: [
       'react', 
       'react-dom', 
+      'react-dom/client',
+      'react/jsx-runtime',
       'react-router-dom',
       '@tanstack/react-query',
       '@supabase/supabase-js',
