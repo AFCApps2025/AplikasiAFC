@@ -4,23 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AFC SYSTEM</title>
-    <script>
-      // GitHub Pages SPA redirect script
-      // This script handles client-side routing for Single Page Applications
-      (function() {
-        var redirect = sessionStorage.redirect;
-        delete sessionStorage.redirect;
-        if (redirect && redirect !== location.href) {
-          history.replaceState(null, null, redirect);
-        }
-      })();
-    </script>
   </head>
   <body>
     <script>
-      // Store the path and redirect to index.html
+      // GitHub Pages SPA redirect script for /AplikasiAFC/ base path
       sessionStorage.redirect = location.href;
-      location.replace(location.origin + location.pathname.split('/').slice(0, -1).join('/') + '/index.html' + location.search + location.hash);
+      location.replace('/AplikasiAFC/');
     </script>
   </body>
 </html>
