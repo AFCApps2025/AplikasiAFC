@@ -50,6 +50,9 @@ const TechnicianDashboard = () => {
   });
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [activeTechCodes, setActiveTechCodes] = useState<string[]>([]);
+  const [activeHelperNames, setActiveHelperNames] = useState<string[]>([]);
+  const [allTechnicians, setAllTechnicians] = useState<TechnicianJobStats[]>([]);
+  const [allHelpers, setAllHelpers] = useState<TechnicianJobStats[]>([]);
 
   useEffect(() => {
     // Get current user from localStorage
@@ -67,16 +70,16 @@ const TechnicianDashboard = () => {
       console.log('WARNING: No currentUser in localStorage');
     }
     
-    // Load active technician codes from database
-    loadActiveTechCodes();
+    // Load active technician codes and helpers from database
+    loadActiveUsers();
   }, []);
 
-  const loadActiveTechCodes = async () => {
+  const loadActiveUsers = async () => {
     try {
       // Get active technician codes
       const { data: techData, error: techError } = await (supabase as any)
         .from('technician_codes')
-        .select('code')
+        .select('code, name')
         .eq('active', true);
       
       if (techError) throw techError;
@@ -84,16 +87,63 @@ const TechnicianDashboard = () => {
       const codes = techData?.map(item => item.code) || [];
       console.log('Active technician codes:', codes);
       setActiveTechCodes(codes);
+      
+      // Initialize all technicians with zero stats
+      const techStats: TechnicianJobStats[] = techData?.map(item => ({
+        name: item.code,
+        role: 'Teknisi',
+        cuci: 0,
+        cekUnit: 0,
+        perbaikanMinor: 0,
+        perbaikanMayor: 0,
+        bongkar: 0,
+        pasangBaru: 0,
+        bongkarPasang: 0,
+        isiFreon: 0,
+        totalJobs: 0
+      })) || [];
+      setAllTechnicians(techStats);
+      
+      // Get active helpers from system_accounts
+      const { data: helperData, error: helperError } = await (supabase as any)
+        .from('system_accounts')
+        .select('name')
+        .eq('role', 'helper')
+        .eq('active', true);
+      
+      if (helperError) throw helperError;
+      
+      // Keep original case from database (e.g., "Dandi" not "DANDI")
+      const helperNames = helperData?.map(item => item.name) || [];
+      console.log('Active helper names:', helperNames);
+      setActiveHelperNames(helperNames);
+      
+      // Initialize all helpers with zero stats (keep original case)
+      const helperStats: TechnicianJobStats[] = helperData?.map(item => ({
+        name: item.name,
+        role: 'Helper',
+        cuci: 0,
+        cekUnit: 0,
+        perbaikanMinor: 0,
+        perbaikanMayor: 0,
+        bongkar: 0,
+        pasangBaru: 0,
+        bongkarPasang: 0,
+        isiFreon: 0,
+        totalJobs: 0
+      })) || [];
+      setAllHelpers(helperStats);
+      
     } catch (error) {
-      console.error('Error loading active technician codes:', error);
+      console.error('Error loading active users:', error);
     }
   };
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && (allTechnicians.length > 0 || allHelpers.length > 0 || currentUser.role === 'teknisi' || currentUser.role === 'helper')) {
       fetchWorkReports();
     }
-  }, [selectedMonth, selectedYear, currentUser]);
+  }, [selectedMonth, selectedYear, currentUser, allTechnicians, allHelpers]);
 
   const fetchWorkReports = async () => {
     if (!currentUser) return;
@@ -140,25 +190,34 @@ const TechnicianDashboard = () => {
         }
       } else if (role === 'helper') {
         // Helper can only see their own work
-        // Try both name and username for helper matching
-        const helperName = currentUser.name?.toUpperCase();
-        const helperUsername = currentUser.username?.toUpperCase();
+        const helperName = currentUser.name; // Keep original case
         
         console.log('=== HELPER DASHBOARD DEBUG ===');
         console.log('Helper name from currentUser:', helperName);
-        console.log('Helper username from currentUser:', helperUsername);
-        console.log('Current user object:', currentUser);
+        console.log('Helper username from currentUser:', currentUser.username);
         
-        // Try to match by name first, then username
+        // Filter by helper name (case-insensitive comparison)
+        // Use the name field which should match the helper column in work_reports
         if (helperName) {
-          query = query.or(`helper.eq.${helperName},helper.ilike.${helperName}`);
-          console.log('Filtering by helper name (case-insensitive):', helperName);
-        } else if (helperUsername) {
-          query = query.or(`helper.eq.${helperUsername},helper.ilike.${helperUsername}`);
-          console.log('Filtering by helper username (case-insensitive):', helperUsername);
-        } else {
-          console.log('WARNING: No helper name or username found');
+          query = query.ilike('helper', helperName);
+          console.log('Applied helper filter with name:', helperName);
         }
+        
+        // Debug: Get all reports to see what's in the database
+        const { data: allReports } = await (supabase as any)
+          .from('work_reports')
+          .select('helper')
+          .eq('status', 'approved')
+          .not('helper', 'is', null)
+          .limit(50);
+        
+        const uniqueHelpers = [...new Set(allReports?.map((r: any) => r.helper))];
+        console.log('Unique helpers in database:', uniqueHelpers);
+        console.log('Looking for helper:', helperName);
+        
+        // Check if helper name exists in database
+        const helperExists = uniqueHelpers.some((h: string) => h.toLowerCase() === helperName?.toLowerCase());
+        console.log('Helper exists in database:', helperExists);
       }
       // Admin and manager can see all data (no filter)
 
@@ -238,7 +297,6 @@ const TechnicianDashboard = () => {
   };
 
   const calculateTechnicianStats = (reports: WorkReport[]) => {
-    const statsMap = new Map<string, TechnicianJobStats>();
     const year = parseInt(selectedYear);
     const month = parseInt(selectedMonth.split('-')[1]);
     
@@ -246,6 +304,80 @@ const TechnicianDashboard = () => {
     const role = currentUser?.role;
     const username = currentUser?.username;
 
+    // Start with all active technicians and helpers (with zero stats)
+    const statsMap = new Map<string, TechnicianJobStats>();
+    
+    console.log('=== CALCULATE TECHNICIAN STATS DEBUG ===');
+    console.log('Role:', role);
+    console.log('allTechnicians:', allTechnicians);
+    console.log('allHelpers:', allHelpers);
+    
+    // For admin/manager: show all active technicians and helpers
+    if (role === 'admin' || role === 'manager') {
+      // Add all active technicians
+      allTechnicians.forEach(tech => {
+        statsMap.set(tech.name, { ...tech });
+      });
+      
+      // Add all active helpers
+      allHelpers.forEach(helper => {
+        statsMap.set(helper.name, { ...helper });
+      });
+      
+      console.log('Admin/Manager - statsMap size:', statsMap.size);
+    }
+    
+    // For teknisi: only show their own stats
+    if (role === 'teknisi') {
+      const technicianMap: { [key: string]: string } = {
+        'teknisi1': 'A1',
+        'teknisi2': 'A2',
+        'teknisi3': 'A3'
+      };
+      const techCode = technicianMap[username || ''];
+      if (techCode) {
+        statsMap.set(techCode, {
+          name: techCode,
+          role: 'Teknisi',
+          cuci: 0,
+          cekUnit: 0,
+          perbaikanMinor: 0,
+          perbaikanMayor: 0,
+          bongkar: 0,
+          pasangBaru: 0,
+          bongkarPasang: 0,
+          isiFreon: 0,
+          totalJobs: 0
+        });
+      }
+    }
+    
+    // For helper: only show their own stats
+    if (role === 'helper') {
+      const helperName = currentUser?.name; // Keep original case
+      console.log('Helper role - helperName:', helperName);
+      if (helperName) {
+        statsMap.set(helperName, {
+          name: helperName,
+          role: 'Helper',
+          cuci: 0,
+          cekUnit: 0,
+          perbaikanMinor: 0,
+          perbaikanMayor: 0,
+          bongkar: 0,
+          pasangBaru: 0,
+          bongkarPasang: 0,
+          isiFreon: 0,
+          totalJobs: 0
+        });
+        console.log('Helper - statsMap size:', statsMap.size);
+      }
+    }
+
+    // Now count jobs from reports
+    console.log('Processing reports, total count:', reports.length);
+    console.log('Reports sample:', reports.slice(0, 3));
+    
     reports.forEach(report => {
       const reportDate = new Date(report.tanggal_dikerjakan);
       const reportYear = reportDate.getFullYear();
@@ -255,95 +387,35 @@ const TechnicianDashboard = () => {
       const isInSelectedMonth = (reportYear === year && reportMonth === month);
       
       // Process technicians
-      if (report.teknisi) {
-        // Skip if technician code is not active (for admin/manager view)
-        if ((role === 'admin' || role === 'manager') && !activeTechCodes.includes(report.teknisi)) {
-          return;
-        }
-        
-        // For teknisi role, only show their own stats
-        if (role === 'teknisi') {
-          const technicianMap: { [key: string]: string } = {
-            'teknisi1': 'A1',
-            'teknisi2': 'A2',
-            'teknisi3': 'A3'
-          };
-          const techCode = technicianMap[username || ''];
-          
-          // Skip if this report is not for current teknisi (compare by code)
-          if (report.teknisi !== techCode) {
-            return;
-          }
-        }
-        
-        if (!statsMap.has(report.teknisi)) {
-          statsMap.set(report.teknisi, {
-            name: report.teknisi,
-            role: 'Teknisi',
-            cuci: 0,
-            cekUnit: 0,
-            perbaikanMinor: 0,
-            perbaikanMayor: 0,
-            bongkar: 0,
-            pasangBaru: 0,
-            bongkarPasang: 0,
-            isiFreon: 0,
-            totalJobs: 0
-          });
-        }
+      if (report.teknisi && statsMap.has(report.teknisi) && isInSelectedMonth) {
+        const stats = statsMap.get(report.teknisi)!;
+        stats.totalJobs++;
 
-        // Only count if in selected month
-        if (isInSelectedMonth) {
-          const stats = statsMap.get(report.teknisi)!;
-          stats.totalJobs++;
-
-          // Count by job type
-          const jobType = report.jenis_pekerjaan?.toLowerCase();
-          if (jobType === 'cuci') stats.cuci++;
-          else if (jobType === 'cek unit') stats.cekUnit++;
-          else if (jobType === 'perbaikan_minor' || jobType === 'perbaikan minor') stats.perbaikanMinor++;
-          else if (jobType === 'perbaikan_mayor' || jobType === 'perbaikan mayor') stats.perbaikanMayor++;
-          else if (jobType === 'bongkar') stats.bongkar++;
-          else if (jobType === 'pasang_baru' || jobType === 'pasang baru') stats.pasangBaru++;
-          else if (jobType === 'bongkar_pasang' || jobType === 'bongkar pasang') stats.bongkarPasang++;
-          else if (jobType === 'isi_freon' || jobType === 'isi freon') stats.isiFreon++;
-        }
+        // Count by job type
+        const jobType = report.jenis_pekerjaan?.toLowerCase();
+        if (jobType === 'cuci') stats.cuci++;
+        else if (jobType === 'cek unit') stats.cekUnit++;
+        else if (jobType === 'perbaikan_minor' || jobType === 'perbaikan minor') stats.perbaikanMinor++;
+        else if (jobType === 'perbaikan_mayor' || jobType === 'perbaikan mayor') stats.perbaikanMayor++;
+        else if (jobType === 'bongkar') stats.bongkar++;
+        else if (jobType === 'pasang_baru' || jobType === 'pasang baru') stats.pasangBaru++;
+        else if (jobType === 'bongkar_pasang' || jobType === 'bongkar pasang') stats.bongkarPasang++;
+        else if (jobType === 'isi_freon' || jobType === 'isi freon') stats.isiFreon++;
       }
 
-      // Process helpers
-      if (report.helper) {
-        // Skip if helper is not in active accounts list (for admin/manager view)
-        // We need to check if helper name exists in system_accounts with active status
-        // For now, we'll filter out helpers with totalJobs = 0 at the end
-        
-        // For helper role, only show their own stats
-        if (role === 'helper') {
-          const helperName = currentUser?.name?.toUpperCase();
-          // Skip if this report is not for current helper
-          if (report.helper !== helperName) {
-            return;
+      // Process helpers (case-insensitive matching)
+      if (report.helper && isInSelectedMonth) {
+        // Find matching helper in statsMap (case-insensitive)
+        let matchedHelper: string | null = null;
+        for (const [key] of statsMap) {
+          if (key.toLowerCase() === report.helper.toLowerCase()) {
+            matchedHelper = key;
+            break;
           }
         }
         
-        if (!statsMap.has(report.helper)) {
-          statsMap.set(report.helper, {
-            name: report.helper,
-            role: 'Helper',
-            cuci: 0,
-            cekUnit: 0,
-            perbaikanMinor: 0,
-            perbaikanMayor: 0,
-            bongkar: 0,
-            pasangBaru: 0,
-            bongkarPasang: 0,
-            isiFreon: 0,
-            totalJobs: 0
-          });
-        }
-
-        // Only count if in selected month
-        if (isInSelectedMonth) {
-          const stats = statsMap.get(report.helper)!;
+        if (matchedHelper) {
+          const stats = statsMap.get(matchedHelper)!;
           stats.totalJobs++;
 
           // Count by job type
@@ -356,11 +428,15 @@ const TechnicianDashboard = () => {
           else if (jobType === 'pasang_baru' || jobType === 'pasang baru') stats.pasangBaru++;
           else if (jobType === 'bongkar_pasang' || jobType === 'bongkar pasang') stats.bongkarPasang++;
           else if (jobType === 'isi_freon' || jobType === 'isi freon') stats.isiFreon++;
+        } else {
+          console.log('No match found for helper:', report.helper, 'in statsMap keys:', Array.from(statsMap.keys()));
         }
       }
     });
 
-    setTechnicianStats(Array.from(statsMap.values()).sort((a, b) => b.totalJobs - a.totalJobs));
+    const finalStats = Array.from(statsMap.values()).sort((a, b) => b.totalJobs - a.totalJobs);
+    console.log('Final technician stats:', finalStats);
+    setTechnicianStats(finalStats);
   };
 
   const getTotalUnitsAllTime = () => {
@@ -475,8 +551,8 @@ const TechnicianDashboard = () => {
         </div>
       </div>
 
-      {/* Technician/Helper Breakdown Stats - Hidden for helper role */}
-      {technicianStats.length > 0 && currentUser?.role !== 'helper' && (
+      {/* Technician/Helper Breakdown Stats */}
+      {technicianStats.length > 0 && (
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="p-6 border-b border-gray-200">
             <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">

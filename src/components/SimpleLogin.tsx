@@ -16,10 +16,38 @@ interface LoggedInUser {
   role: 'admin' | 'teknisi' | 'manager' | 'helper';
 }
 
-const getActiveUsers = (): User[] => {
+const getActiveUsersFromDatabase = async (): Promise<User[]> => {
+  try {
+    // Fetch active users from Supabase
+    const { data, error } = await (supabase as any)
+      .from('system_accounts')
+      .select('*')
+      .eq('active', true);
+    
+    if (error) throw error;
+    
+    if (data && data.length > 0) {
+      // Map database accounts to User format
+      const dbUsers = data.map((acc: any) => ({
+        id: acc.username,
+        password: acc.password,
+        role: acc.role,
+        name: acc.name
+      }));
+      
+      // Update localStorage for offline access
+      localStorage.setItem('systemAccounts', JSON.stringify(data));
+      
+      return dbUsers;
+    }
+  } catch (error) {
+    console.error('Error fetching users from database:', error);
+  }
+  
+  // Fallback to localStorage if database fails
   const systemAccounts = JSON.parse(localStorage.getItem('systemAccounts') || '[]');
   
-  // Default users if no systemAccounts found (only admin, teknisi, manager - no helpers)
+  // Default users if no systemAccounts found
   const defaultUsers: User[] = [
     { id: 'admin', password: 'w753', role: 'admin', name: 'Administrator' },
     { id: 'teknisi1', password: 'afc1', role: 'teknisi', name: 'Taufiq' },
@@ -45,7 +73,6 @@ const getActiveUsers = (): User[] => {
     }));
 
   // Merge defaultUsers with systemAccounts, prioritizing systemAccounts
-  // This ensures helpers and any new accounts from database are included
   const systemUsernames = new Set(activeSystemAccounts.map((u: User) => u.id));
   const mergedUsers = [
     ...activeSystemAccounts,
@@ -100,15 +127,13 @@ const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
-    const USERS = getActiveUsers();
     setError('');
 
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Fetch active users from database
+      const USERS = await getActiveUsersFromDatabase();
 
-      // Use hardcoded USERS array for authentication
+      // Authenticate user
       const user = USERS.find(u => u.id === username && u.password === password);
 
       if (!user) {
