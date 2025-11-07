@@ -185,23 +185,30 @@ const ScheduledBookings = () => {
         return;
       }
 
-      // Filter out bookings that have work reports
-      // EXCEPT bookings with status 'ditolak' - they should appear even if they have rejected work reports
+      // Filter out bookings that have APPROVED work reports
+      // Keep bookings with pending/rejected work reports OR no work reports at all
       const filteredBookings = (bookingsData || []).filter(booking => {
-        const hasReport = bookingIdsWithReports.has(booking.id) || 
-                         bookingIdsWithReports.has(booking.booking_id);
+        // Find related work reports for this booking
+        const relatedReports = (workReportsData || []).filter(
+          report => report.booking_id === booking.id || report.booking_id === booking.booking_id
+        );
         
-        // If booking status is 'ditolak', always show it (don't filter out)
-        if (booking.status === 'ditolak') {
-          console.log('Keeping rejected booking in schedule:', booking.booking_id || booking.id, booking.nama);
+        // If no work reports, keep the booking (it's truly pending)
+        if (relatedReports.length === 0) {
           return true;
         }
         
-        if (hasReport) {
-          console.log('Filtering out booking with work report:', booking.booking_id || booking.id, booking.nama);
+        // If has work reports, only filter out if ANY report is approved
+        const hasApprovedReport = relatedReports.some(report => report.status === 'approved');
+        
+        if (hasApprovedReport) {
+          console.log('Filtering out booking with approved work report:', booking.booking_id || booking.id, booking.nama);
+          return false;
         }
         
-        return !hasReport;
+        // Keep bookings with only pending/rejected work reports
+        console.log('Keeping booking with pending/rejected work report:', booking.booking_id || booking.id, booking.nama, 'statuses:', relatedReports.map(r => r.status));
+        return true;
       });
 
       // Gabungkan data bookings dengan work_reports info
