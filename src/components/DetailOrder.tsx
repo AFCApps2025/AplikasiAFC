@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Search, User, Phone, MapPin, Package, Calendar, Clock, FileText, Image, CheckCircle } from 'lucide-react';
+import { Search, User, Phone, MapPin, Package, Calendar, Clock, FileText, Image, CheckCircle, Trash2 } from 'lucide-react';
 
 interface BookingData {
   id?: string;
@@ -58,10 +58,16 @@ const DetailOrder = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedOrder, setSelectedOrder] = useState<CombinedOrderData | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<CombinedOrderData | null>(null);
   
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  
+  // Get current user role
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  const isAdmin = currentUser?.role === 'admin';
 
   useEffect(() => {
     fetchOrdersData();
@@ -232,6 +238,52 @@ const DetailOrder = () => {
     setShowDetailModal(true);
   };
 
+  const openDeleteConfirm = (order: CombinedOrderData) => {
+    setOrderToDelete(order);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleDeleteOrder = async () => {
+    if (!orderToDelete) return;
+
+    try {
+      // Delete work report if exists
+      if (orderToDelete.has_work_report && orderToDelete.work_report?.id) {
+        const { error: wrError } = await supabase
+          .from('work_reports')
+          .delete()
+          .eq('id', orderToDelete.work_report.id);
+
+        if (wrError) throw wrError;
+      }
+
+      // Delete booking
+      const { error: bookingError } = await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', orderToDelete.id);
+
+      if (bookingError) throw bookingError;
+
+      toast({
+        title: 'Berhasil',
+        description: 'Order berhasil dihapus',
+      });
+
+      // Refresh data
+      fetchOrdersData();
+      setShowDeleteConfirm(false);
+      setOrderToDelete(null);
+    } catch (error: any) {
+      console.error('Error deleting order:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Gagal menghapus order',
+        variant: 'destructive',
+      });
+    }
+  };
+
   const renderPhotos = (photoUrl: string | null) => {
     if (!photoUrl) return null;
 
@@ -381,15 +433,26 @@ const DetailOrder = () => {
                       </div>
                     </div>
 
-                    <Button
-                      onClick={() => showOrderDetail(order)}
-                      variant="outline"
-                      size="sm"
-                      className="self-start sm:self-center"
-                    >
-                      <FileText className="h-4 w-4 mr-2" />
-                      Detail
-                    </Button>
+                    <div className="flex gap-2 self-start sm:self-center">
+                      <Button
+                        onClick={() => showOrderDetail(order)}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <FileText className="h-4 w-4 mr-2" />
+                        Detail
+                      </Button>
+                      {isAdmin && (
+                        <Button
+                          onClick={() => openDeleteConfirm(order)}
+                          variant="outline"
+                          size="sm"
+                          className="text-red-600 hover:bg-red-50 border-red-200"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -569,6 +632,41 @@ const DetailOrder = () => {
                   </Card>
                 )}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && orderToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">Konfirmasi Hapus Order</h3>
+            <p className="text-gray-600 mb-6">
+              Apakah Anda yakin ingin menghapus order <strong>{orderToDelete.booking_id}</strong> dari <strong>{orderToDelete.nama}</strong>?
+              {orderToDelete.has_work_report && (
+                <span className="block mt-2 text-red-600 font-medium">
+                  ⚠️ Work report terkait juga akan dihapus!
+                </span>
+              )}
+            </p>
+            <div className="flex gap-3 justify-end">
+              <Button
+                onClick={() => {
+                  setShowDeleteConfirm(false);
+                  setOrderToDelete(null);
+                }}
+                variant="outline"
+              >
+                Batal
+              </Button>
+              <Button
+                onClick={handleDeleteOrder}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Hapus
+              </Button>
             </div>
           </div>
         </div>

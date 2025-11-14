@@ -428,7 +428,7 @@ Terima kasih, semoga Bapak/Ibu selalu dalam keadaan sehat wal afiat.
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          deviceId: 'd_ID@6753a3309becd_BGhPsyGyyZujb',
+          deviceId: 'd_ID@6753a3309becd_quP1xnBTMo1uO',
           number: formattedPhone,
           message: message
         })
@@ -1130,6 +1130,16 @@ Terima kasih, semoga Bapak/Ibu selalu dalam keadaan sehat wal afiat.
                           Selesaikan Booking
                         </button>
                       </>
+                    )}
+
+                    {(selectedBooking.status === 'ditolak' || selectedBooking.status === 'rejected') && (isAdmin || isManager || isTeknisi) && (
+                      <button
+                        onClick={() => navigate(`/work-report?bookingId=${selectedBooking.id}`)}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                      >
+                        <CheckCircle className="h-5 w-5" />
+                        Selesaikan Booking
+                      </button>
                     )}
                   </div>
                 )}

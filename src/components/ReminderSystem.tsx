@@ -131,7 +131,7 @@ _Mohon pengertiannya saat adzan berkumandang, crew kami agar diberikan ijin menu
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          deviceId: 'd_ID@6753a3309becd_BGhPsyGyyZujb',
+          deviceId: 'd_ID@6753a3309becd_quP1xnBTMo1uO',
           number: formattedPhone,
           message: message
         })

@@ -52,7 +52,7 @@ const AdminPanel = () => {
 
   const loadSystemAccounts = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('system_accounts')
         .select('*')
         .order('role', { ascending: true })
@@ -76,7 +76,7 @@ const AdminPanel = () => {
 
   const loadTechnicianCodes = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('technician_codes')
         .select(`
           *,
@@ -229,7 +229,7 @@ const AdminPanel = () => {
           is_default: acc.is_default
         }));
         
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('system_accounts')
           .insert(accountsToAdd);
         
@@ -239,7 +239,7 @@ const AdminPanel = () => {
       // 2. Update accounts
       if (pendingAccountChanges.updated.length > 0) {
         for (const account of pendingAccountChanges.updated) {
-          const { error } = await supabase
+          const { error } = await (supabase as any)
             .from('system_accounts')
             .update({
               active: account.active,
@@ -254,7 +254,7 @@ const AdminPanel = () => {
 
       // 3. Delete accounts
       if (pendingAccountChanges.deleted.length > 0) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('system_accounts')
           .delete()
           .in('id', pendingAccountChanges.deleted);
@@ -265,7 +265,7 @@ const AdminPanel = () => {
       // 4. Update technician codes
       if (pendingTechCodeChanges.updated.length > 0) {
         for (const techCode of pendingTechCodeChanges.updated) {
-          const { error } = await supabase
+          const { error } = await (supabase as any)
             .from('technician_codes')
             .update({
               name: techCode.name,
