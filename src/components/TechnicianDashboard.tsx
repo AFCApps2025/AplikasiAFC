@@ -587,6 +587,12 @@ const TechnicianDashboard = () => {
                     Pasang
                   </th>
                   <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Bongkar Pasang
+                  </th>
+                  <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Isi Freon
+                  </th>
+                  <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Total
                   </th>
                 </tr>
@@ -628,6 +634,12 @@ const TechnicianDashboard = () => {
                     </td>
                     <td className="px-3 py-4 whitespace-nowrap text-center">
                       <span className="text-sm font-semibold text-gray-900">{stat.pasangBaru}</span>
+                    </td>
+                    <td className="px-3 py-4 whitespace-nowrap text-center">
+                      <span className="text-sm font-semibold text-gray-900">{stat.bongkarPasang}</span>
+                    </td>
+                    <td className="px-3 py-4 whitespace-nowrap text-center">
+                      <span className="text-sm font-semibold text-gray-900">{stat.isiFreon}</span>
                     </td>
                     <td className="px-3 py-4 whitespace-nowrap text-center">
                       <span className="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">

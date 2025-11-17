@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Service AC - Profesional</title>
+    <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/10/1e/a6/101ea6b3464455757657e2fccaad69c8.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -597,9 +598,8 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">No WhatsApp <span class="text-red-500">*</span></label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500">📱</span>
-                        <input type="tel" id="noHp" required class="form-input w-full pl-10" placeholder="Contoh: 628123456789 atau +14155552671">
+                        <input type="tel" id="noHp" required class="form-input w-full pl-10" placeholder="awali dengan angka 62 ( contoh : 62812XXXXXXX)">
                     </div>
-                    <p class="text-xs text-gray-500 mt-1">Gunakan format internasional dengan kode negara (62 untuk Indonesia, 1 untuk USA, 44 untuk UK, dll)</p>
                 </div>
 
                 <!-- Alamat Lengkap -->
@@ -689,10 +689,23 @@
                     <label class="block text-sm font-medium text-gray-700 mb-4">Pilih Layanan <span class="text-red-500">*</span></label>
                     <p class="text-xs text-gray-600 mb-4"></p>
 
-                    <!-- Cek / Cuci Unit -->
+                    <!-- Cek Unit -->
                     <div class="service-section">
                         <div class="service-header">
-                            <h3 class="service-title">🧽 Cek / Cuci Unit</h3>
+                            <h3 class="service-title">🔍 Cek Unit</h3>
+                            <span id="cekCount" class="unit-counter bg-yellow-100 text-yellow-800">0 unit</span>
+                        </div>
+                        <div class="quantity-controls">
+                            <button type="button" class="quantity-btn disabled" id="cekMinus">−</button>
+                            <div class="quantity-display" id="cekQuantity">0</div>
+                            <button type="button" class="quantity-btn" id="cekPlus">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Cuci Unit -->
+                    <div class="service-section">
+                        <div class="service-header">
+                            <h3 class="service-title">🧽 Cuci Unit</h3>
                             <span id="cuciCount" class="unit-counter bg-blue-100 text-blue-800">0 unit</span>
                         </div>
                         <div class="quantity-controls">
@@ -779,8 +792,8 @@
                                 <span class="text-red-500 text-lg">⚠️</span>
                             </div>
                             <div class="ml-3">
-                                <h4 class="text-sm font-medium text-red-800">Kode Referral Sudah Digunakan</h4>
-                                <p class="text-sm text-red-700 mt-1">Nomor telepon Anda sudah pernah menggunakan kode referral ini sebelumnya. Setiap nomor telepon hanya dapat menggunakan kode referral yang sama sekali saja.</p>
+                                <h4 class="text-sm font-medium text-red-800">Ganti No Telepon yang lain</h4>
+                                <p class="text-sm text-red-700 mt-1">nomor telepon anda sudah pernah direferensikan oleh kode referral yg lain, gunakan no telpon yang lain yang belum pernah digunakan untuk mendaftar.</p>
                             </div>
                         </div>
                     </div>
@@ -857,6 +870,7 @@
 
         // Service quantities
         let serviceQuantities = {
+            cek: 0,
             cuci: 0,
             perbaikan: 0,
             pasang: 0
@@ -903,37 +917,47 @@
             '2026-12-25': 'Hari Raya Natal'
         };
 
+        async function generateNextBookingId() {
+            const defaultId = 'AFC-202501';
+
+            if (!supabaseClient) {
+                return defaultId;
+            }
+
+            const { data: latestBooking, error } = await supabaseClient
+                .from('bookings')
+                .select('booking_id')
+                .like('booking_id', 'AFC-%')
+                .order('booking_id', { ascending: false })
+                .limit(1);
+
+            if (error) {
+                console.error('Database query error:', error);
+                return defaultId;
+            }
+
+            if (latestBooking && latestBooking.length > 0) {
+                const lastId = latestBooking[0].booking_id;
+                console.log('Latest booking ID from database:', lastId);
+                const lastNumber = parseInt(lastId.replace('AFC-', ''));
+                if (!isNaN(lastNumber)) {
+                    const nextId = `AFC-${String(lastNumber + 1).padStart(6, '0')}`;
+                    console.log('Calculated next booking ID:', nextId);
+                    return nextId;
+                }
+                console.log('Using default starting ID (invalid last number)');
+            } else {
+                console.log('No existing bookings found, using default starting ID');
+            }
+
+            return defaultId;
+        }
+
         // Initialize booking ID on page load
         async function initializeBookingId() {
             try {
-                let nextBookingId = 'AFC-202501';
-                
-                if (supabaseClient) {
-                    const { data: latestBooking, error } = await supabaseClient
-                        .from('bookings')
-                        .select('booking_id')
-                        .like('booking_id', 'AFC-%')
-                        .order('booking_id', { ascending: false })
-                        .limit(1);
-                    
-                    if (error) {
-                        console.error('Database query error:', error);
-                    } else if (latestBooking && latestBooking.length > 0) {
-                        const lastId = latestBooking[0].booking_id;
-                        console.log('Latest booking ID from database:', lastId);
-                        const lastNumber = parseInt(lastId.replace('AFC-', ''));
-                        if (!isNaN(lastNumber)) {
-                            // Always increment from the highest booking ID found
-                            nextBookingId = `AFC-${String(lastNumber + 1).padStart(6, '0')}`;
-                            console.log('Calculated next booking ID:', nextBookingId);
-                        } else {
-                            console.log('Using default starting ID (invalid last number)');
-                        }
-                    } else {
-                        console.log('No existing bookings found, using default starting ID');
-                    }
-                }
-                
+                const nextBookingId = await generateNextBookingId();
+
                 bookingIdInput.value = nextBookingId;
                 bookingIdInput.dispatchEvent(new Event('input', { bubbles: true }));
                 console.log('Booking ID initialized:', nextBookingId);
@@ -945,14 +969,40 @@
             }
         }
 
+        // Capacity settings per weekday (0=Sunday ... 6=Saturday)
+        const dayCapacityMap = {
+            0: 0,   // Sunday - blocked by validation
+            1: 24,
+            2: 24,
+            3: 24,
+            4: 24,
+            5: 15,
+            6: 24
+        };
+
         // Global variable to store current available quota
-        let currentAvailableQuota = 15;
+        let currentAvailableQuota = dayCapacityMap[new Date().getDay()] ?? 24;
 
         // Fetch daily quota for specific date
         async function fetchDailyQuota(selectedDate = null) {
             try {
                 const targetDate = selectedDate || new Date().toISOString().split('T')[0];
-                
+                const displayDate = new Date(targetDate + 'T00:00:00');
+                const dayOfWeek = displayDate.getDay();
+                const maxCapacity = dayCapacityMap.hasOwnProperty(dayOfWeek) ? dayCapacityMap[dayOfWeek] : 24;
+
+                if (maxCapacity === 0) {
+                    currentAvailableQuota = 0;
+                    quotaStatus.innerHTML = `
+                        <div class="text-center">
+                            <p class="text-lg font-semibold">Kuota unit terjadwal pada ${displayDate.toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}</p>
+                            <p class="text-sm text-red-600">❌ Kuota tidak tersedia untuk hari ini</p>
+                        </div>
+                    `;
+                    updateServiceDisplay();
+                    return;
+                }
+
                 if (supabaseClient) {
                     const { data: bookings } = await supabaseClient
                         .from('bookings')
@@ -960,13 +1010,11 @@
                         .eq('tanggal_kunjungan', targetDate);
                     
                     const totalBooked = bookings ? bookings.reduce((sum, booking) => sum + (booking.jumlah_unit || 0), 0) : 0;
-                    const maxCapacity = 15;
                     const available = Math.max(0, maxCapacity - totalBooked);
                     
                     // Update global quota variable
                     currentAvailableQuota = available;
                     
-                    const displayDate = new Date(targetDate + 'T00:00:00');
                     quotaStatus.innerHTML = `
                         <div class="text-center">
                             <p class="text-lg font-semibold">Kuota unit terjadwal pada ${displayDate.toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}</p>
@@ -982,7 +1030,9 @@
             } catch (error) {
                 console.error('Error fetching quota:', error);
                 quotaStatus.innerHTML = '<p class="text-gray-600">Tidak dapat memuat kuota</p>';
-                currentAvailableQuota = 15; // Default fallback
+                const fallbackDate = selectedDate ? new Date(selectedDate + 'T00:00:00') : new Date();
+                const fallbackDay = fallbackDate.getDay();
+                currentAvailableQuota = dayCapacityMap.hasOwnProperty(fallbackDay) ? dayCapacityMap[fallbackDay] : 24;
             }
         }
 
@@ -1058,6 +1108,7 @@
             const currentTotal = Object.values(serviceQuantities).reduce((sum, qty) => sum + qty, 0);
             if (currentTotal > currentAvailableQuota) {
                 // Reset all quantities to 0
+                serviceQuantities.cek = 0;
                 serviceQuantities.cuci = 0;
                 serviceQuantities.perbaikan = 0;
                 serviceQuantities.pasang = 0;
@@ -1096,6 +1147,11 @@
         }
 
         function updateServiceDisplay() {
+            // Update cek
+            document.getElementById('cekQuantity').textContent = serviceQuantities.cek;
+            document.getElementById('cekCount').textContent = `${serviceQuantities.cek} unit`;
+            document.getElementById('cekMinus').classList.toggle('disabled', serviceQuantities.cek === 0);
+
             // Update cuci
             document.getElementById('cuciQuantity').textContent = serviceQuantities.cuci;
             document.getElementById('cuciCount').textContent = `${serviceQuantities.cuci} unit`;
@@ -1117,6 +1173,7 @@
 
             // Disable plus buttons if total would exceed available quota
             const canAdd = total < currentAvailableQuota;
+            document.getElementById('cekPlus').classList.toggle('disabled', !canAdd);
             document.getElementById('cuciPlus').classList.toggle('disabled', !canAdd);
             document.getElementById('perbaikanPlus').classList.toggle('disabled', !canAdd);
             document.getElementById('pasangPlus').classList.toggle('disabled', !canAdd);
@@ -1136,6 +1193,8 @@
         }
 
         // Service button event listeners
+        document.getElementById('cekPlus').addEventListener('click', () => updateQuantity('cek', 1));
+        document.getElementById('cekMinus').addEventListener('click', () => updateQuantity('cek', -1));
         document.getElementById('cuciPlus').addEventListener('click', () => updateQuantity('cuci', 1));
         document.getElementById('cuciMinus').addEventListener('click', () => updateQuantity('cuci', -1));
         document.getElementById('perbaikanPlus').addEventListener('click', () => updateQuantity('perbaikan', 1));
@@ -1235,7 +1294,7 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        deviceId: "d_ID@6753a3309becd_BGhPsyGyyZujb",
+                        deviceId: "d_ID@6753a3309becd_quP1xnBTMo1uO",
                         number: formattedPhone,
                         message: message,
                     }),
@@ -1463,32 +1522,12 @@ Program Partner Affiliate`;
                 loadingModal.classList.remove('hidden');
                 
                 // Validate phone number format first
-                let phoneNumber = document.getElementById('noHp').value.trim();
+                const phoneNumber = document.getElementById('noHp').value;
                 
-                // Normalize phone number: remove spaces, dashes, and handle + prefix
-                phoneNumber = phoneNumber.replace(/[\s\-\(\)]/g, '');
-                
-                // If starts with +, remove it
-                if (phoneNumber.startsWith('+')) {
-                    phoneNumber = phoneNumber.substring(1);
+                // Check if phone number starts with 62 (not +62 or 0)
+                if (!phoneNumber.startsWith('62')) {
+                    throw new Error('Format nomor telepon tidak valid. Nomor harus dimulai dengan 62 (contoh: 628123456789). Tidak boleh menggunakan +62 atau 0.');
                 }
-                
-                // If starts with 0 (local format), remove leading 0
-                if (phoneNumber.startsWith('0')) {
-                    phoneNumber = phoneNumber.substring(1);
-                }
-                
-                // Validate that it contains only digits and has minimum length
-                if (!/^\d+$/.test(phoneNumber)) {
-                    throw new Error('Format nomor telepon tidak valid. Gunakan hanya angka dengan kode negara (contoh: 628123456789 atau 14155552671).');
-                }
-                
-                if (phoneNumber.length < 10) {
-                    throw new Error('Nomor telepon terlalu pendek. Pastikan menggunakan format internasional dengan kode negara.');
-                }
-                
-                // Update the input value with normalized number
-                document.getElementById('noHp').value = phoneNumber;
                 
                 // Validate referral code usage
                 const referralCode = document.getElementById('kodeReferral').value;
@@ -1514,7 +1553,8 @@ Program Partner Affiliate`;
 
                 // Create service details string
                 let serviceDetails = [];
-                if (serviceQuantities.cuci > 0) serviceDetails.push(`Cek/Cuci Unit (${serviceQuantities.cuci})`);
+                if (serviceQuantities.cek > 0) serviceDetails.push(`Cek Unit (${serviceQuantities.cek})`);
+                if (serviceQuantities.cuci > 0) serviceDetails.push(`Cuci Unit (${serviceQuantities.cuci})`);
                 if (serviceQuantities.perbaikan > 0) serviceDetails.push(`Perbaikan Unit (${serviceQuantities.perbaikan})`);
                 if (serviceQuantities.pasang > 0) serviceDetails.push(`Pasang Unit Baru (${serviceQuantities.pasang})`);
                 
@@ -1618,7 +1658,7 @@ Program Partner Affiliate`;
                 window.history.replaceState({}, document.title, url.pathname);
                 
                 // Reset service quantities
-                serviceQuantities = { cuci: 0, perbaikan: 0, pasang: 0 };
+                serviceQuantities = { cek: 0, cuci: 0, perbaikan: 0, pasang: 0 };
                 updateServiceDisplay();
                 updateSubmitButton();
 
