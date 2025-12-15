@@ -21,7 +21,8 @@ import BrandHistory from './components/BrandHistory';
 import TechnicianDashboard from './components/TechnicianDashboard';
 import JadwalShalatPage from './components/JadwalShalatPage';
 import AffiliateList from './components/AffiliateList';
-import { Calendar, Home, FileText, History, Users, ClipboardList, CalendarClock, Settings, LogOut, Package, Menu, X, Bell, CheckCircle, BarChart3 } from "lucide-react";
+import InternalNotes from './components/InternalNotes';
+import { Calendar, Home, FileText, History, Users, ClipboardList, CalendarClock, Settings, LogOut, Package, Menu, X, Bell, CheckCircle, BarChart3, ChevronDown } from "lucide-react";
 import { notificationService } from './utils/notifications';
 
 // Optimize React Query configuration
@@ -46,6 +47,7 @@ const Navigation = ({ currentUser, onLogout }: { currentUser: any; onLogout: () 
   const [soundEnabled, setSoundEnabled] = useState(() => {
     return localStorage.getItem('soundEnabled') !== 'false';
   });
+  const [isHistoryDropdownOpen, setIsHistoryDropdownOpen] = useState(false);
 
   // Update localStorage when notification settings change
   useEffect(() => {
@@ -197,6 +199,73 @@ const Navigation = ({ currentUser, onLogout }: { currentUser: any; onLogout: () 
                       const Icon = item.icon;
                       const isActive = location.pathname === item.path;
                       
+                      // Special handling for "Riwayat Laporan" - make it a dropdown
+                      if (item.label === 'Riwayat Laporan') {
+                        return (
+                          <div key={item.path}>
+                            {/* Main Menu Item with Dropdown */}
+                            <button
+                              onClick={() => setIsHistoryDropdownOpen(!isHistoryDropdownOpen)}
+                              className={`group flex items-center justify-between w-full px-4 py-3 text-sm font-medium transition-all duration-300 hover:scale-[1.02] hover:translate-x-2 ${
+                                location.pathname === '/order-history' || location.pathname === '/internal-notes'
+                                  ? 'text-green-600 bg-gradient-to-r from-green-50/80 to-transparent border-r-4 border-green-500' 
+                                  : 'text-gray-700 hover:text-green-600 hover:bg-gradient-to-r hover:from-green-50/50 hover:to-transparent'
+                              }`}
+                              style={{
+                                animation: `slideInStagger 0.5s ease-out ${index * 0.1}s both`,
+                              }}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className={`p-1.5 rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 ${
+                                  location.pathname === '/order-history' || location.pathname === '/internal-notes'
+                                    ? 'bg-green-100 shadow-lg shadow-green-200/50' 
+                                    : 'bg-gray-100/50 group-hover:bg-green-100/70 group-hover:shadow-md'
+                                }`}>
+                                  <Icon className={`h-4 w-4 transition-all duration-300 ${
+                                    location.pathname === '/order-history' || location.pathname === '/internal-notes'
+                                      ? 'text-green-600' 
+                                      : 'text-gray-500 group-hover:text-green-600'
+                                  }`} />
+                                </div>
+                                <span className="font-semibold tracking-wide">{item.label}</span>
+                              </div>
+                              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isHistoryDropdownOpen ? 'rotate-180' : ''}`} />
+                            </button>
+                            
+                            {/* Submenu */}
+                            {isHistoryDropdownOpen && (
+                              <div className="ml-8 mt-1 space-y-1">
+                                <Link
+                                  to="/order-history"
+                                  onClick={closeMenu}
+                                  className={`group flex items-center gap-2 px-4 py-2 text-sm transition-all duration-200 rounded-lg ${
+                                    location.pathname === '/order-history'
+                                      ? 'text-green-600 bg-green-50/60 font-semibold'
+                                      : 'text-gray-600 hover:text-green-600 hover:bg-green-50/40'
+                                  }`}
+                                >
+                                  <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
+                                  Riwayat Laporan
+                                </Link>
+                                <Link
+                                  to="/internal-notes"
+                                  onClick={closeMenu}
+                                  className={`group flex items-center gap-2 px-4 py-2 text-sm transition-all duration-200 rounded-lg ${
+                                    location.pathname === '/internal-notes'
+                                      ? 'text-orange-600 bg-orange-50/60 font-semibold'
+                                      : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50/40'
+                                  }`}
+                                >
+                                  <div className="w-1.5 h-1.5 rounded-full bg-current"></div>
+                                  Catatan Internal
+                                </Link>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                      
+                      // Regular menu item
                       return (
                         <Link
                           key={item.path}
@@ -530,6 +599,7 @@ const App = () => {
                 {(currentUser?.role === 'admin' || currentUser?.role === 'manager') && (
                   <Route path="/affiliate-list" element={<AffiliateList />} />
                 )}
+                <Route path="/internal-notes" element={<InternalNotes />} />
                 </Routes>
             </main>
             <BottomNavigation />

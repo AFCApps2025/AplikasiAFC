@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { CalendarClock, Phone, MapPin, User, CheckCircle, Calendar, RefreshCw, X, Clock } from 'lucide-react';
+import { CalendarClock, Phone, MapPin, User, CheckCircle, Calendar, RefreshCw, X, Clock, XCircle } from 'lucide-react';
 import { notificationService } from '../utils/notifications';
 
 // Component for technician selector
@@ -122,6 +122,7 @@ const ScheduledBookings = () => {
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [editedNotes, setEditedNotes] = useState('');
   const [isUpdatingTechnician, setIsUpdatingTechnician] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
   const navigate = useNavigate();
 
   // Get current user from localStorage
@@ -523,6 +524,38 @@ Terima kasih, semoga Bapak/Ibu selalu dalam keadaan sehat wal afiat.
     }
   };
 
+  const handleCancelBooking = async (bookingId: string) => {
+    if (!currentUser || (!isAdmin && !isManager)) {
+      alert('Anda tidak memiliki akses untuk menghapus booking');
+      return;
+    }
+
+    if (!confirm('Apakah Anda yakin ingin menghapus booking ini? Data akan terhapus permanen dari database.')) {
+      return;
+    }
+
+    try {
+      setIsCancelling(true);
+      
+      // DELETE booking from database (permanent)
+      const { error } = await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', bookingId);
+
+      if (error) throw error;
+
+      alert('✅ Booking berhasil dihapus');
+      await fetchBookings();
+      setShowDetailModal(false);
+    } catch (error) {
+      console.error('Error deleting booking:', error);
+      alert('❌ Gagal menghapus booking');
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -606,16 +639,31 @@ Terima kasih, semoga Bapak/Ibu selalu dalam keadaan sehat wal afiat.
                   <div className="text-right text-sm">
                     <div className="font-medium text-gray-900">{booking.tanggal_kunjungan}</div>
                     <div className="text-gray-500 text-xs mt-1">{booking.jenis_layanan}</div>
-                    <button 
-                      className="text-blue-600 text-xs mt-2 hover:underline"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedBooking(booking);
-                        setShowDetailModal(true);
-                      }}
-                    >
-                      Tap untuk detail
-                    </button>
+                    <div className="flex flex-col gap-1 mt-2">
+                      <button 
+                        className="text-blue-600 text-xs hover:underline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedBooking(booking);
+                          setShowDetailModal(true);
+                        }}
+                      >
+                        Tap untuk detail
+                      </button>
+                      {(isAdmin || isManager) && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCancelBooking(booking.id);
+                          }}
+                          className="text-red-600 text-xs hover:underline flex items-center justify-center gap-1 mr-8"
+                          title="Hapus booking"
+                        >
+                          <XCircle className="h-3 w-3" />
+                          Hapus
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -1139,6 +1187,18 @@ Terima kasih, semoga Bapak/Ibu selalu dalam keadaan sehat wal afiat.
                       >
                         <CheckCircle className="h-5 w-5" />
                         Selesaikan Booking
+                      </button>
+                    )}
+
+                    {/* Tombol Hapus Booking - hanya untuk admin/manager */}
+                    {(isAdmin || isManager) && (
+                      <button
+                        onClick={() => handleCancelBooking(selectedBooking.id)}
+                        disabled={isCancelling}
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 font-medium"
+                      >
+                        <XCircle className="h-5 w-5" />
+                        {isCancelling ? 'Menghapus...' : 'Hapus Booking'}
                       </button>
                     )}
                   </div>
