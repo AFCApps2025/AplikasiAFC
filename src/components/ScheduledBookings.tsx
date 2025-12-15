@@ -169,7 +169,7 @@ const ScheduledBookings = () => {
       let bookingsQuery = supabase
         .from('bookings')
         .select('*')
-        .not('status', 'in', '(completed,selesai)')  // Tidak tampilkan yang sudah selesai (tapi tampilkan ditolak)
+        .not('status', 'in', '(completed,selesai,deleted)')  // Hide completed & deleted entries
         .order('tanggal_kunjungan', { ascending: true })
         .order('waktu_kunjungan', { ascending: true });
 
@@ -530,22 +530,25 @@ Terima kasih, semoga Bapak/Ibu selalu dalam keadaan sehat wal afiat.
       return;
     }
 
-    if (!confirm('Apakah Anda yakin ingin menghapus booking ini? Data akan terhapus permanen dari database.')) {
+    if (!confirm('Sembunyikan booking ini dari daftar? Data tetap tersimpan di database.')) {
       return;
     }
 
     try {
       setIsCancelling(true);
       
-      // DELETE booking from database (permanent)
+      // Soft delete booking by marking status 'deleted'
       const { error } = await supabase
         .from('bookings')
-        .delete()
+        .update({
+          status: 'deleted',
+          updated_at: new Date().toISOString()
+        })
         .eq('id', bookingId);
 
       if (error) throw error;
 
-      alert('✅ Booking berhasil dihapus');
+      alert('✅ Booking berhasil disembunyikan (soft delete)');
       await fetchBookings();
       setShowDetailModal(false);
     } catch (error) {
