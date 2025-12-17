@@ -50,15 +50,16 @@ const SimpleBookingDashboard = () => {
         formattedPhone = '62' + formattedPhone;
       }
 
-      const response = await fetch('https://crm.woo-wa.com/send/message-text', {
+      const response = await fetch('https://nonleaking-cameron-eagerly.ngrok-free.dev/api/send', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-api-key': 'FrostAC2025'
         },
         body: JSON.stringify({
-          deviceId: 'd_ID@6753a3309becd_quP1xnBTMo1uO',
+          sessionId: 'f1',
           number: formattedPhone,
-          message: message
+          message
         })
       });
 

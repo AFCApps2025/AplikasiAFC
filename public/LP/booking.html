@@ -1662,10 +1662,11 @@
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                "x-api-key": "f1",
+                "x-api-key": "FrostAC2025",
+                "session-id": "f1",
               },
               body: JSON.stringify({
-                sessionId: "frost_main",
+                sessionId: "f1",
                 number: formattedPhone,
                 message,
               }),
@@ -1690,7 +1691,7 @@
 
           return response.ok;
         } catch (error) {
-          console.error(`Error sending WhatsApp to ${phoneNumber}:`, error);
+          console.log("WhatsApp sending failed (but registration was successful):", error);
           return false;
         }
       }
