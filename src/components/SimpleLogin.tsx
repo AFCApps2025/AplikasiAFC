@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Eye, EyeOff, LogIn, Mail, Smartphone } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, useEffect } from "react";
+import { Eye, EyeOff, LogIn, Mail, Smartphone } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface User {
   id: string;
   password: string;
-  role: 'admin' | 'teknisi' | 'manager' | 'helper';
+  role: "admin" | "teknisi" | "manager" | "helper";
   name: string;
 }
 
@@ -13,49 +13,56 @@ interface LoggedInUser {
   id: string;
   username: string;
   name: string;
-  role: 'admin' | 'teknisi' | 'manager' | 'helper';
+  role: "admin" | "teknisi" | "manager" | "helper";
 }
 
 const getActiveUsersFromDatabase = async (): Promise<User[]> => {
   try {
     // Fetch active users from Supabase
     const { data, error } = await (supabase as any)
-      .from('system_accounts')
-      .select('*')
-      .eq('active', true);
-    
+      .from("system_accounts")
+      .select("*")
+      .eq("active", true);
+
     if (error) throw error;
-    
+
     if (data && data.length > 0) {
       // Map database accounts to User format
       const dbUsers = data.map((acc: any) => ({
         id: acc.username,
         password: acc.password,
         role: acc.role,
-        name: acc.name
+        name: acc.name,
       }));
-      
+
       // Update localStorage for offline access
-      localStorage.setItem('systemAccounts', JSON.stringify(data));
-      
+      localStorage.setItem("systemAccounts", JSON.stringify(data));
+
       return dbUsers;
     }
   } catch (error) {
-    console.error('Error fetching users from database:', error);
+    console.error("Error fetching users from database:", error);
   }
-  
+
   // Fallback to localStorage if database fails
-  const systemAccounts = JSON.parse(localStorage.getItem('systemAccounts') || '[]');
-  
+  const systemAccounts = JSON.parse(
+    localStorage.getItem("systemAccounts") || "[]"
+  );
+
   // Default users if no systemAccounts found
   const defaultUsers: User[] = [
-    { id: 'admin', password: 'w753', role: 'admin', name: 'Administrator' },
-    { id: 'teknisi1', password: 'afc1', role: 'teknisi', name: 'Taufiq' },
-    { id: 'teknisi2', password: 'afc2', role: 'teknisi', name: 'Teknisi2' },
-    { id: 'umar', password: 'u2025', role: 'manager', name: 'umar' },
-    { id: 'manager', password: 'afc4', role: 'manager', name: 'Manager Teknisi' },
-    { id: 'iwan', password: 'i2025', role: 'manager', name: 'Iwan' },
-    { id: 'dedy', password: 'd2025', role: 'manager', name: 'Dedy' }
+    { id: "admin", password: "w753", role: "admin", name: "Administrator" },
+    { id: "teknisi1", password: "afc1", role: "teknisi", name: "Taufiq" },
+    { id: "teknisi2", password: "afc2", role: "teknisi", name: "Teknisi2" },
+    { id: "umar", password: "u2025", role: "manager", name: "umar" },
+    {
+      id: "manager",
+      password: "afc4",
+      role: "manager",
+      name: "Manager Teknisi",
+    },
+    { id: "iwan", password: "i2025", role: "manager", name: "Iwan" },
+    { id: "dedy", password: "d2025", role: "manager", name: "Dedy" },
   ];
 
   if (systemAccounts.length === 0) {
@@ -69,14 +76,14 @@ const getActiveUsersFromDatabase = async (): Promise<User[]> => {
       id: acc.username,
       password: acc.password,
       role: acc.role,
-      name: acc.name
+      name: acc.name,
     }));
 
   // Merge defaultUsers with systemAccounts, prioritizing systemAccounts
   const systemUsernames = new Set(activeSystemAccounts.map((u: User) => u.id));
   const mergedUsers = [
     ...activeSystemAccounts,
-    ...defaultUsers.filter(u => !systemUsernames.has(u.id))
+    ...defaultUsers.filter((u) => !systemUsernames.has(u.id)),
   ];
 
   return mergedUsers;
@@ -87,10 +94,10 @@ interface SimpleLoginProps {
 }
 
 const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
@@ -102,9 +109,9 @@ const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
       setShowInstallPrompt(true);
     };
 
-    window.addEventListener('beforeinstallprompt', handler);
+    window.addEventListener("beforeinstallprompt", handler);
 
-    return () => window.removeEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
   const handleInstallClick = async () => {
@@ -112,11 +119,11 @@ const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
 
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
+
+    if (outcome === "accepted") {
       setShowInstallPrompt(false);
     }
-    
+
     setDeferredPrompt(null);
   };
 
@@ -127,17 +134,19 @@ const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       // Fetch active users from database
       const USERS = await getActiveUsersFromDatabase();
 
       // Authenticate user
-      const user = USERS.find(u => u.id === username && u.password === password);
+      const user = USERS.find(
+        (u) => u.id === username && u.password === password
+      );
 
       if (!user) {
-        throw new Error('Username atau password salah');
+        throw new Error("Username atau password salah");
       }
 
       // Store user data safely
@@ -145,43 +154,44 @@ const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
         id: user.id,
         username: user.id,
         name: user.name,
-        role: user.role
+        role: user.role,
       };
 
       try {
-        localStorage.setItem('currentUser', JSON.stringify(userData));
-        localStorage.setItem('lastActivity', Date.now().toString());
+        localStorage.setItem("currentUser", JSON.stringify(userData));
+        localStorage.setItem("lastActivity", Date.now().toString());
       } catch (storageError) {
-        console.error('LocalStorage error:', storageError);
+        console.error("LocalStorage error:", storageError);
         // Continue with login even if localStorage fails
       }
 
       // Play login sound
-      const loginSound = new Audio('https://cdn.pixabay.com/download/audio/2025/04/11/audio_8fc2b30703.mp3');
+      const loginSound = new Audio(
+        "https://cdn.pixabay.com/download/audio/2025/04/11/audio_8fc2b30703.mp3"
+      );
       loginSound.volume = 0.7;
-      loginSound.play().catch(err => console.log('Login sound failed:', err));
+      loginSound.play().catch((err) => console.log("Login sound failed:", err));
 
       onLogin(userData);
-      
     } catch (error: any) {
-      console.error('Login error:', error);
-      setError(error.message || 'Terjadi kesalahan saat login');
+      console.error("Login error:", error);
+      setError(error.message || "Terjadi kesalahan saat login");
     } finally {
       setLoading(false);
     }
   };
 
-
   return (
-    <div 
+    <div
       className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center bg-no-repeat relative"
       style={{
-        backgroundImage: 'url(https://images.unsplash.com/photo-1718203862467-c33159fdc504?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
+        backgroundImage:
+          "url(https://images.unsplash.com/photo-1718203862467-c33159fdc504?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)",
       }}
     >
       {/* Dark overlay for better readability */}
       <div className="absolute inset-0 bg-black/50"></div>
-      
+
       {/* PWA Install Prompt - Above Login Form */}
       {showInstallPrompt && (
         <div className="fixed top-4 left-4 right-4 z-50 animate-slide-down">
@@ -222,16 +232,16 @@ const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
           <form onSubmit={handleLogin} className="neon-form">
             {/* AFC Logo */}
             <div className="neon-logo">
-              <img 
-                src="https://i.pinimg.com/736x/10/1e/a6/101ea6b3464455757657e2fccaad69c8.jpg" 
-                alt="AFC Logo" 
+              <img
+                src="https://i.pinimg.com/736x/10/1e/a6/101ea6b3464455757657e2fccaad69c8.jpg"
+                alt="AFC Logo"
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
-            
-            {/* Header - Aqsha Fresh & Cool */}
-            <span className="neon-header" style={{ fontFamily: 'Lilita One' }}>
-              Aqsha Fresh & Cool
+
+            {/* Header - FROST */}
+            <span className="neon-header" style={{ fontFamily: "Lilita One" }}>
+              FROST
             </span>
 
             {/* Username Input */}
@@ -247,7 +257,7 @@ const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
             {/* Password Input */}
             <div className="relative w-full">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
@@ -259,7 +269,11 @@ const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
               </button>
             </div>
 
@@ -290,7 +304,7 @@ const SimpleLogin: React.FC<SimpleLoginProps> = ({ onLogin }) => {
             <p className="neon-footer">
               Sistem Manajemen Service AFC
               <br />
-              <span className="text-orange-400">Aqsha Fresh & Cool</span>
+              <span className="text-orange-400">FROST</span>
             </p>
           </form>
         </div>

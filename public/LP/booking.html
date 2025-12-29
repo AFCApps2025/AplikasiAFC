@@ -582,6 +582,162 @@
     </style>
   </head>
   <body>
+    <!-- Image Popup Modal -->
+    <div id="imagePopupModal" class="image-popup-overlay" style="display: flex">
+      <div class="image-popup-content">
+        <img
+          src="https://i.pinimg.com/736x/77/0f/ac/770facf4abca0f1034a6a7b9b2a00960.jpg"
+          alt="Promo AFC"
+          class="popup-image"
+        />
+        <button class="close-popup-btn" onclick="closeImagePopup()">
+          Tutup
+        </button>
+      </div>
+    </div>
+
+    <style>
+      /* Image Popup Styles */
+      .image-popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .image-popup-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90vh;
+        animation: zoomIn 0.4s ease-out;
+      }
+
+      @keyframes zoomIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .popup-image {
+        width: 100%;
+        height: auto;
+        max-height: 85vh;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      .close-popup-btn {
+        position: absolute;
+        bottom: -60px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #10b981;
+        color: white;
+        border: none;
+        padding: 12px 40px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+      }
+
+      .close-popup-btn:hover {
+        background: #059669;
+        transform: translateX(-50%) translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 640px) {
+        .image-popup-content {
+          max-width: 95%;
+        }
+
+        .popup-image {
+          border-radius: 8px;
+        }
+
+        .close-popup-btn {
+          bottom: -50px;
+          padding: 10px 30px;
+          font-size: 14px;
+        }
+      }
+    </style>
+
+    <script>
+      // Close image popup
+      function closeImagePopup() {
+        const modal = document.getElementById("imagePopupModal");
+        if (modal) {
+          modal.style.animation = "fadeOut 0.3s ease-out";
+          setTimeout(() => {
+            modal.style.display = "none";
+          }, 300);
+        }
+      }
+
+      // Add fadeOut animation
+      const popupStyle = document.createElement("style");
+      popupStyle.textContent = `
+        @keyframes fadeOut {
+          from { opacity: 1; }
+          to { opacity: 0; }
+        }
+      `;
+      document.head.appendChild(popupStyle);
+
+      // Auto show on page load and close on any click or keypress
+      document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("imagePopupModal");
+        if (modal) {
+          // Show modal
+          setTimeout(() => {
+            modal.style.display = "flex";
+          }, 300);
+
+          // Close on ANY click anywhere
+          modal.addEventListener("click", function (e) {
+            closeImagePopup();
+          });
+
+          // Close on ANY keypress
+          document.addEventListener(
+            "keydown",
+            function (e) {
+              closeImagePopup();
+            },
+            { once: true }
+          ); // Only listen once
+        }
+      });
+    </script>
+
     <!-- Background decorative circles -->
     <div class="bg-decoration bg-circle-1"></div>
     <div class="bg-decoration bg-circle-2"></div>
@@ -625,7 +781,7 @@
               class="w-20 h-20 bg-green-600 rounded-full mx-auto flex items-center justify-center"
               style="display: none"
             >
-              <span class="text-white font-bold text-xl">AFC</span>
+              <span class="text-white font-bold text-xl">FROST</span>
             </div>
           </div>
           <h1 class="text-3xl font-bold mb-2">Booking Layanan AC</h1>
@@ -1185,53 +1341,91 @@
         "2026-12-25": "Hari Raya Natal",
       };
 
-      async function generateNextBookingId() {
+      // Generate unique booking ID atomically at submission time
+      async function generateUniqueBookingId(maxRetries = 5) {
         const defaultId = "AFC-202501";
 
         if (!supabaseClient) {
+          console.warn("Supabase client not available, using default ID");
           return defaultId;
         }
 
-        const { data: latestBooking, error } = await supabaseClient
-          .from("bookings")
-          .select("booking_id")
-          .like("booking_id", "AFC-%")
-          .order("booking_id", { ascending: false })
-          .limit(1);
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+          try {
+            console.log(
+              `Generating unique booking ID (attempt ${attempt}/${maxRetries})...`
+            );
 
-        if (error) {
-          console.error("Database query error:", error);
-          return defaultId;
-        }
+            // Query for the latest booking ID
+            const { data: latestBooking, error } = await supabaseClient
+              .from("bookings")
+              .select("booking_id")
+              .like("booking_id", "AFC-%")
+              .order("booking_id", { ascending: false })
+              .limit(1);
 
-        if (latestBooking && latestBooking.length > 0) {
-          const lastId = latestBooking[0].booking_id;
-          console.log("Latest booking ID from database:", lastId);
-          const lastNumber = parseInt(lastId.replace("AFC-", ""));
-          if (!isNaN(lastNumber)) {
-            const nextId = `AFC-${String(lastNumber + 1).padStart(6, "0")}`;
-            console.log("Calculated next booking ID:", nextId);
-            return nextId;
+            if (error) {
+              console.error(
+                `Database query error (attempt ${attempt}):`,
+                error
+              );
+              if (attempt === maxRetries) {
+                throw new Error(
+                  "Gagal mengambil data booking ID dari database"
+                );
+              }
+              // Wait before retry (exponential backoff)
+              await new Promise((resolve) =>
+                setTimeout(resolve, 100 * attempt)
+              );
+              continue;
+            }
+
+            let nextId;
+            if (latestBooking && latestBooking.length > 0) {
+              const lastId = latestBooking[0].booking_id;
+              console.log("Latest booking ID from database:", lastId);
+              const lastNumber = parseInt(lastId.replace("AFC-", ""));
+              if (!isNaN(lastNumber)) {
+                nextId = `AFC-${String(lastNumber + 1).padStart(6, "0")}`;
+                console.log("✅ Generated unique booking ID:", nextId);
+                return nextId;
+              }
+              console.log("Invalid last number, using default ID");
+              return defaultId;
+            } else {
+              console.log(
+                "No existing bookings found, using default starting ID"
+              );
+              return defaultId;
+            }
+          } catch (error) {
+            console.error(
+              `Error generating booking ID (attempt ${attempt}):`,
+              error
+            );
+            if (attempt === maxRetries) {
+              throw error;
+            }
+            // Wait before retry
+            await new Promise((resolve) => setTimeout(resolve, 100 * attempt));
           }
-          console.log("Using default starting ID (invalid last number)");
-        } else {
-          console.log("No existing bookings found, using default starting ID");
         }
 
-        return defaultId;
+        throw new Error("Gagal generate booking ID setelah beberapa percobaan");
       }
 
-      // Initialize booking ID on page load
+      // Initialize booking ID on page load with placeholder
       async function initializeBookingId() {
         try {
-          const nextBookingId = await generateNextBookingId();
-
-          bookingIdInput.value = nextBookingId;
+          // Set placeholder ID - actual unique ID will be generated on submission
+          bookingIdInput.value = "AFC-PENDING";
           bookingIdInput.dispatchEvent(new Event("input", { bubbles: true }));
-          console.log("Booking ID initialized:", nextBookingId);
+          console.log("Booking ID initialized with placeholder: AFC-PENDING");
+          console.log("Unique ID will be generated when form is submitted");
         } catch (error) {
           console.error("Error initializing booking ID:", error);
-          bookingIdInput.value = "AFC-202501";
+          bookingIdInput.value = "AFC-PENDING";
           bookingIdInput.dispatchEvent(new Event("input", { bubbles: true }));
         }
       }
@@ -1691,7 +1885,10 @@
 
           return response.ok;
         } catch (error) {
-          console.log("WhatsApp sending failed (but registration was successful):", error);
+          console.log(
+            "WhatsApp sending failed (but registration was successful):",
+            error
+          );
           return false;
         }
       }
@@ -1754,7 +1951,7 @@ ${serviceDetails}
 
 Jika ada pertanyaan atau perlu mengubah jadwal, silakan hubungi kami.
 
-*AQSHA FRESH & COOL*
+*FROST*
 _Layanan AC Profesional De Latinos & Sekitarnya_`;
 
           // Send customer notification
@@ -1809,10 +2006,10 @@ ${serviceDetails}
 
 Setelah selesai dikerjakan, Anda akan mendapat tambahan *1 poin senilai Rp 50.000 atau GRATIS cuci 1 unit AC.*
 
-✅ Terima kasih telah menjadi partner AFC yang aktif!
+✅ Terima kasih telah menjadi partner FROST yang aktif!
 Referensikan terus teman dan keluarga anda yang lain untuk mendapat lebih banyak poin!
 
-*AQSHA FRESH & COOL*
+*FROST*
 Program Partner Affiliate`;
 
               console.log(
@@ -1943,6 +2140,8 @@ Program Partner Affiliate`;
       bookingForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
+        let uniqueBookingId = null; // Store the final unique ID
+
         try {
           // Show loading
           loadingModal.classList.remove("hidden");
@@ -1970,12 +2169,6 @@ Program Partner Affiliate`;
                 "Nomor telepon Anda sudah pernah menggunakan kode referral sebelumnya. Setiap nomor telepon hanya dapat menggunakan kode referral sekali saja."
               );
             }
-          }
-
-          // Validate booking ID format
-          const bookingIdValue = document.getElementById("bookingId").value;
-          if (!bookingIdValue || !bookingIdValue.startsWith("AFC-")) {
-            throw new Error("Invalid booking ID format");
           }
 
           // Calculate total units and create service details
@@ -2014,8 +2207,13 @@ Program Partner Affiliate`;
             waktuTime = "13:00:00"; // Valid TIME format for database
           }
 
+          // ✨ GENERATE UNIQUE BOOKING ID ATOMICALLY AT SUBMISSION TIME ✨
+          console.log("🔄 Generating unique booking ID...");
+          uniqueBookingId = await generateUniqueBookingId();
+          console.log("✅ Unique booking ID generated:", uniqueBookingId);
+
           const formData = {
-            booking_id: bookingIdValue,
+            booking_id: uniqueBookingId, // Use the newly generated unique ID
             nama: document.getElementById("nama").value,
             no_hp: document.getElementById("noHp").value,
             alamat: document.getElementById("alamat").value,
@@ -2041,7 +2239,7 @@ Program Partner Affiliate`;
             throw new Error("Mohon lengkapi semua field yang wajib diisi");
           }
 
-          console.log("Submitting booking:", formData);
+          console.log("Submitting booking with unique ID:", formData);
 
           // Save to database
           if (supabaseClient) {
@@ -2054,17 +2252,17 @@ Program Partner Affiliate`;
               throw new Error("Database error: " + error.message);
             }
 
-            console.log("Booking saved to database:", data);
+            console.log("✅ Booking saved to database with unique ID:", data);
           }
 
-          // Send WhatsApp notification (with dual notifications if referral code exists)
+          // Send WhatsApp notification with the unique booking ID
           const serviceDetailsText = serviceDetails.join("\n");
           await sendWhatsAppNotification(
             formData.nama,
             formData.no_hp,
             formData.tanggal_kunjungan,
             formData.alamat,
-            formData.booking_id,
+            uniqueBookingId, // Use the unique ID in WhatsApp
             serviceDetailsText,
             formData.catatan,
             total,
@@ -2072,20 +2270,14 @@ Program Partner Affiliate`;
             formData.kode_referral // Pass referral code for dual notifications
           );
 
-          // Extract current number from booking ID and generate next ID
-          const currentId = bookingIdValue;
-          const currentNumber = parseInt(currentId.replace("AFC-", ""));
-          const nextId = `AFC-${String(currentNumber + 1).padStart(6, "0")}`;
-
           console.log("=== BOOKING COMPLETE ===");
-          console.log("Current booking ID:", currentId);
-          console.log("Next booking ID:", nextId);
+          console.log("Final unique booking ID:", uniqueBookingId);
 
-          // Reset form and set next booking ID
+          // Reset form and set placeholder for next booking
           bookingForm.reset();
 
-          // Set the next booking ID and trigger events to ensure UI updates
-          bookingIdInput.value = nextId;
+          // Set placeholder ID for next booking
+          bookingIdInput.value = "AFC-PENDING";
           bookingIdInput.dispatchEvent(new Event("input", { bubbles: true }));
           bookingIdInput.dispatchEvent(new Event("change", { bubbles: true }));
 
@@ -2118,21 +2310,36 @@ Program Partner Affiliate`;
           afternoonSlot.classList.remove("selected");
           waktuKunjunganInput.value = "";
 
-          console.log("Form reset with next ID:", nextId);
+          console.log("Form reset with placeholder ID: AFC-PENDING");
           console.log("Referral code cleared from form and URL");
-          console.log(
-            "Booking ID field value after reset:",
-            bookingIdInput.value
-          );
 
           // Refresh quota
           await fetchDailyQuota();
+
+          // Update success modal to show the unique booking ID
+          const successModalContent =
+            successModal.querySelector(".text-center");
+          if (successModalContent) {
+            successModalContent.innerHTML = `
+              <div class="mb-4">
+                <svg class="mx-auto h-12 w-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">Booking Berhasil!</h3>
+              <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-4">
+                <p class="text-sm text-gray-600 mb-1">Booking ID Anda:</p>
+                <p class="text-2xl font-bold text-blue-600">${uniqueBookingId}</p>
+              </div>
+              <p class="text-sm text-gray-600">Kami akan menghubungi Anda segera untuk konfirmasi jadwal.</p>
+            `;
+          }
 
           // Hide loading and show success
           loadingModal.classList.add("hidden");
           successModal.classList.remove("hidden");
         } catch (error) {
-          console.error("Booking error:", error);
+          console.error("❌ Booking error:", error);
           loadingModal.classList.add("hidden");
           errorMessage.textContent = error.message;
           errorModal.classList.remove("hidden");
@@ -2142,11 +2349,28 @@ Program Partner Affiliate`;
       // Modal close functions
       function closeSuccessModal() {
         successModal.classList.add("hidden");
+        // Auto refresh halaman setelah modal ditutup
+        console.log("🔄 Refreshing page after successful booking...");
+        window.location.reload();
       }
 
       function closeErrorModal() {
         errorModal.classList.add("hidden");
       }
+
+      // ESC key listener untuk close success modal dan refresh
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" || e.key === "Esc") {
+          // Jika success modal terbuka, tutup dan refresh
+          if (!successModal.classList.contains("hidden")) {
+            closeSuccessModal();
+          }
+          // Jika error modal terbuka, tutup saja (tanpa refresh)
+          if (!errorModal.classList.contains("hidden")) {
+            closeErrorModal();
+          }
+        }
+      });
 
       // Initialize on page load
       document.addEventListener("DOMContentLoaded", async () => {
@@ -2173,8 +2397,8 @@ Program Partner Affiliate`;
         // Method 1: Dari path segments
         if (pathSegments.length > 0) {
           const lastSegment = pathSegments[pathSegments.length - 1];
-          // Cek format kode referral (A-0001, A-0002, dst)
-          if (lastSegment && /^A-\d{4}$/.test(lastSegment)) {
+          // Cek format kode referral (A-0001, C-0001, dst)
+          if (lastSegment && /^[AC]-\d{4}$/.test(lastSegment)) {
             referralCode = lastSegment;
           }
         }
@@ -2186,8 +2410,8 @@ Program Partner Affiliate`;
             urlParams.get("ref") ||
             urlParams.get("referral") ||
             urlParams.get("code");
-          // Validasi format A-0001
-          if (referralCode && !/^A-\d{4}$/.test(referralCode)) {
+          // Validasi format A-0001 atau C-0001
+          if (referralCode && !/^[AC]-\d{4}$/.test(referralCode)) {
             referralCode = null;
           }
         }
@@ -2195,7 +2419,7 @@ Program Partner Affiliate`;
         // Method 3: Dari hash (#A-0001)
         if (!referralCode) {
           const hash = window.location.hash.substring(1);
-          if (hash && /^A-\d{4}$/.test(hash)) {
+          if (hash && /^[AC]-\d{4}$/.test(hash)) {
             referralCode = hash;
           }
         }
