@@ -4,10 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Program Affiliate FROST - Modal Ngobrol Dapat Rp 50.000!</title>
+    <meta
+      name="description"
+      content="Mau tambahan 50RB - 1 juta tiap Jumat lewat FROST Affiliate? Modal HP & Mulut Manis doang! Daftar sekarang gratis."
+    />
     <link
       rel="icon"
       type="image/png"
       href="https://i.pinimg.com/736x/f0/7c/8d/f07c8da0a8e8a5ef3667f85a53f766ea.jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
     />
     <style>
       * {
@@ -17,587 +27,327 @@
       }
 
       body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f5f5f5;
-        padding: 20px;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #f8f8f8;
         line-height: 1.6;
+        color: #1a1a1a;
       }
 
       .container {
-        max-width: 600px;
+        max-width: 700px;
         margin: 0 auto;
         background: white;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
       }
 
-      /* Header Title */
-      .main-title {
+      /* Target Section */
+      .target-section {
         text-align: center;
+        padding: 12px 20px;
+        font-size: 13px;
+        color: #666;
+        font-style: italic;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      /* Main Headline */
+      .headline {
+        text-align: center;
+        padding: 30px 20px 15px;
         font-size: 28px;
         font-weight: 900;
-        margin-bottom: 20px;
         line-height: 1.3;
-        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+        letter-spacing: -0.5px;
       }
 
-      /* Subtitle */
-      .subtitle {
+      /* Subheadline */
+      .subheadline {
         text-align: center;
-        font-size: 14px;
-        margin-bottom: 20px;
-        line-height: 1.5;
-      }
-
-      /* Yellow Link Box */
-      .link-box {
-        background: #ffeb3b;
-        border: 3px solid #fbc02d;
-        border-radius: 8px;
-        padding: 15px;
-        text-align: center;
-        margin: 25px 0;
-      }
-
-      .link-box a {
-        color: #000;
-        text-decoration: none;
-        font-size: 16px;
-        font-weight: bold;
-        word-break: break-all;
-      }
-
-      .link-note {
-        font-size: 12px;
-        font-style: italic;
-        color: #333;
-        margin-top: 8px;
-      }
-
-      /* Cyan Section Header */
-      .section-header {
-        background: #0003ab;
-        color: rgb(255, 255, 255);
-        padding: 12px 20px;
-        font-size: 22px;
-        font-weight: 900;
-        text-align: center;
-        margin: 30px -30px 20px -30px;
-        border-radius: 0;
-        /* text-shadow: 2px 2px 4px rgb(255, 255, 255); */
-        letter-spacing: 0.5px;
-      }
-
-      /* Bold Text */
-      .bold-center {
-        text-align: center;
-        font-weight: bold;
-        font-size: 16px;
-        margin: 20px 0;
-        text-transform: uppercase;
-      }
-
-      /* Content Paragraph */
-      .content-text {
-        font-size: 14px;
-        text-align: justify;
-        margin-bottom: 15px;
-        line-height: 1.7;
-      }
-
-      /* Checklist Items */
-      .checklist {
-        margin: 20px 0;
-      }
-
-      .checklist-item {
-        margin-bottom: 20px;
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .checklist-item .check {
+        padding: 0 20px 30px;
         font-size: 20px;
-        flex-shrink: 0;
+        font-weight: 700;
+        color: #2c2c2c;
       }
 
-      .checklist-item .content {
-        flex: 1;
+      /* Content Section */
+      .content {
+        padding: 0 30px 30px;
       }
 
-      .checklist-title {
-        font-weight: bold;
+      .intro-text {
         font-size: 15px;
-        margin-bottom: 5px;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        text-align: justify;
       }
 
-      .checklist-desc {
-        font-size: 13px;
-        color: #333;
-        line-height: 1.5;
+      .intro-text strong {
+        font-weight: 700;
+      }
+
+      .intro-text .highlight {
+        font-weight: 900;
+      }
+
+      /* Section Title */
+      .section-title {
+        font-size: 17px;
+        font-weight: 900;
+        margin: 25px 0 15px;
+      }
+
+      /* Numbered List */
+      .numbered-list {
+        margin: 15px 0 20px;
+        padding-left: 0;
+        list-style: none;
+        counter-reset: item-counter;
+      }
+
+      .numbered-list li {
+        counter-increment: item-counter;
+        margin-bottom: 15px;
+        font-size: 14px;
+        line-height: 1.7;
+        position: relative;
+        padding-left: 28px;
+      }
+
+      .numbered-list li::before {
+        content: counter(item-counter) ".";
+        position: absolute;
+        left: 0;
+        font-weight: 700;
+        color: #000;
+      }
+
+      .numbered-list li strong {
+        font-weight: 700;
       }
 
       /* Sub-bullets */
       .sub-bullets {
         margin-top: 8px;
         padding-left: 20px;
+        font-size: 13px;
       }
 
       .sub-bullets li {
-        font-size: 13px;
         margin-bottom: 5px;
       }
 
-      /* Yellow Highlight Box */
-      .yellow-box {
-        background: #ffeb3b;
-        border: 2px solid #fbc02d;
-        padding: 15px;
+      /* Highlight Box */
+      .highlight-box {
+        background: #fff9e6;
+        border-left: 4px solid #ffc107;
+        padding: 15px 20px;
+        margin: 20px 0;
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      /* CTA Section */
+      .cta-section {
+        padding: 30px 30px 40px;
+        background: #fafafa;
         text-align: center;
-        font-size: 20px;
-        font-weight: 900;
-        margin: 30px 0;
-        border-radius: 8px;
-        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+      }
+
+      .cta-prompt {
+        font-size: 14px;
+        margin-bottom: 20px;
+        color: #555;
+      }
+
+      /* Buttons */
+      .btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .btn {
+        display: block;
+        padding: 16px 30px;
+        font-size: 16px;
+        font-weight: 700;
+        text-decoration: none;
+        border-radius: 50px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #ff9800, #ff6f00);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #4caf50, #2e7d32);
+        color: white;
       }
 
       /* Responsive */
       @media (max-width: 640px) {
-        .container {
-          padding: 20px;
-        }
-
-        .main-title {
+        .headline {
           font-size: 22px;
+          padding: 25px 15px 12px;
         }
 
-        .section-header {
-          font-size: 16px;
-          margin-left: -20px;
-          margin-right: -20px;
+        .subheadline {
+          font-size: 17px;
+          padding: 0 15px 25px;
         }
-      }
 
-      /* Super Bold Class */
-      .super-bold {
-        font-weight: 900 !important;
-        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
-      }
-
-      /* Green Header Bold */
-      .green-header {
-        font-weight: 900 !important;
-        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
-      }
-
-      /* Red Blinking Button */
-      .red-blink-btn {
-        display: inline-block;
-        background: #ff0000;
-        color: white;
-        padding: 18px 40px;
-        font-size: 20px;
-        font-weight: 900;
-        text-decoration: none;
-        border-radius: 10px;
-        text-transform: uppercase;
-        box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
-        animation: blink-animation 1.5s infinite;
-        transition: transform 0.2s;
-      }
-
-      .red-blink-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(255, 0, 0, 0.7);
-      }
-
-      @keyframes blink-animation {
-        0%,
-        100% {
-          opacity: 1;
-          box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
+        .content {
+          padding: 0 20px 25px;
         }
-        50% {
-          opacity: 0.7;
-          box-shadow: 0 4px 25px rgba(255, 0, 0, 0.9);
+
+        .cta-section {
+          padding: 25px 20px 35px;
+        }
+
+        .btn {
+          font-size: 15px;
+          padding: 14px 25px;
         }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <!-- Main Title -->
-      <h1 class="main-title">MAU TAMBAHAN 50RB - 1 JUTA TIAP JUMAT?</h1>
-
-      <!-- Subtitle -->
-      <p class="subtitle">
-        <strong>Modal HP & "Mulut Manis" Doang!</strong><br />
-        Khusus Ojol, Kurir & Security. Ubah AC Tetangga Jadi Cuan Tunai.
-      </p>
-
-      <!-- Yellow Link Box
-      <div class="link-box">
-        <a
-          href="https://wa.me/6285166662711?text=Assalamu'alaikum%20ka%2C%20saya%20mau%20daftar%20Affiliate%20"
-          target="_blank"
-          >DISINI
-        </a>
-        <div class="link-note"></div>
-      </div> -->
-
-      <!-- Cyan Section 1 -->
-      <div class="section-header">CARA KERJANYA SIMPEL, BANG:</div>
-
-      <ol style="margin: 20px 0; padding-left: 25px; font-size: 14px">
-        <li style="margin-bottom: 15px">
-          <strong>DAFTAR GRATIS</strong> di sini. Dapet Link/Barcode khusus.
-        </li>
-        <li style="margin-bottom: 15px">
-          <strong>SEBAR LINK</strong> ke customer/tetangga yang AC-nya
-          kotor/panas.
-        </li>
-        <li style="margin-bottom: 15px">
-          <strong>KITA YANG KERJA,</strong> Abang duduk manis.
-        </li>
-        <li style="margin-bottom: 15px">
-          <strong>TERIMA KOMISI</strong> Rp 50.000/orang tiap hari Jumat.
-        </li>
-      </ol>
-
-      <!-- Cyan Section 2 -->
-      <div class="section-header">KENAPA HARUS IKUT?</div>
-
-      <!-- Checklist Items -->
-      <div class="checklist">
-        <!-- Item 1 -->
-        <div class="checklist-item">
-          <div class="check">💰</div>
-          <div class="content">
-            <div class="checklist-title">
-              Komisi Gede: Rp 50.000 per customer (Syarat: Min. Cuci 2 AC).
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="checklist-item">
-          <div class="check">🚀</div>
-          <div class="content">
-            <div class="checklist-title">
-              Cepat Cair: Poin dihitung Kamis, Jumat duit masuk
-              rekening/e-wallet.
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 3 -->
-        <div class="checklist-item">
-          <div class="check">📱</div>
-          <div class="content">
-            <div class="checklist-title">
-              Transparan: Ada notif WA otomatis tiap ada orderan masuk.
-            </div>
-          </div>
-        </div>
-
-        <!-- Item 4 -->
-        <div class="checklist-item">
-          <div class="check">🎁</div>
-          <div class="content">
-            <div class="checklist-title">
-              Bonus: Poin bisa dituker Cuci AC GRATIS buat rumah sendiri.
-            </div>
-          </div>
-        </div>
+      <!-- Target Audience -->
+      <div class="target-section">
+        <em
+          >Target: Mereka yang skeptis, ragu, atau pernah ketipu tawaran
+          online</em
+        >
       </div>
 
-      <!-- Yellow Highlight Box -->
-      <div class="yellow-box">JANGAN SAMPE KEDULUAN TEMEN SEBELAH!</div>
+      <!-- Main Headline -->
+      <h1 class="headline">
+        MAU TAMBAHAN 50RB - 1 JUTA TIAP JUMAT<br />
+        LEWAT FROST AFFILIATE?
+      </h1>
 
-      <!-- PAGE 2 CONTENT -->
+      <!-- Subheadline -->
+      <div class="subheadline">Modal HP & "Mulut Manis" Doang!</div>
 
-      <!-- Target Section -->
-      <p
-        class="content-text"
-        style="text-align: center; margin-top: 30px; font-size: 16px"
-      >
-        <strong
-          >Dapet 10 orang aja udah <span style="font-weight: 900;">Rp 500.000</span>. Kerja sampingan, hasil jutaan.
-          Sikat sekarang!</strong
-        >
-      </p>
+      <!-- Content -->
+      <div class="content">
+        <p class="intro-text">
+          <strong>Saya Paham Kok Kenapa Abang Masih Mikir-Mikir...</strong>
+        </p>
 
-      <!-- Red Blinking CTA Button -->
-      <div style="text-align: center; margin: 30px 0">
-        <a
-          href="https://wa.me/6285166662711?text=Assalamu'alaikum%20ka%2C%20saya%20mau%20daftar%20Affiliate%20"
-          target="_blank"
-          class="red-blink-btn"
-        >
-          DAFTAR SEKARANG (GRATIS)
-        </a>
-      </div>
+        <p class="intro-text">
+          <strong>Wajar kalau Abang belum langsung yakin.</strong> Hari gini
+          banyak banget tawaran manis di grup WA yang ujung-ujungnya zonk.
+          <span class="highlight"
+            >Kebanyakan orang di posisi Abang juga ngerasa gitu</span
+          >
+          di awal. Takut ribet, takut ganggu kerjaan utama, atau takut gak
+          dibayar.
+        </p>
 
-      <!-- Yellow Box: Caranya Gampang Banget
-        <div class="yellow-box" style="margin-top: 30px">
-          Caranya Gampang Banget :
-        </div>
+        <p class="intro-text">
+          Saya gak mau janji muluk-muluk.
+          <span class="highlight"
+            >Saya gak mau maksa, cuma mau bantu Abang lihat dengan lebih
+            jelas.</span
+          >
+          Tenang, kita bahas pelan-pelan aja.
+          <strong>Biar Abang gak nebak-nebak, ini detail barangnya:</strong>
+        </p>
 
-        <ol style="margin: 20px 0; padding-left: 25px">
-          <li style="margin-bottom: 15px">
-            <strong>DAFTAR:</strong> Isi data diri Kamu (Gratis). Kami buatkan
-            Akun & Barcode Affiliate Kamu.
+        <div class="section-title">FROST Affiliate itu Simpelnya Gini :</div>
+
+        <ol class="numbered-list">
+          <li>
+            <strong>Produknya Jelas:</strong> Jasa Cuci & Servis AC Profesional
+            di Tangsel (Real, ada teknisinya)
           </li>
-          <li style="margin-bottom: 15px">
-            <strong>SEBAR:</strong> Ketemu customer yang ngeluh panas? Tetangga
-            komplex? Share link atau kasih scan barcode Kamu.
+          <li>
+            <strong>Kantornya Jelas,</strong> di Ruko Centro Havana De Latinos
+            (mampir aja dulu kalo mau cek ada apa gak)
           </li>
-          <li style="margin-bottom: 15px">
-            <strong>KERJA:</strong> Tim Teknisi FROST yang jujur & profesional
-            akan datang mengerjakan orderan customer itu.
+          <li>
+            <strong>Tugas Abang:</strong> Cuma referensiin/share link ke
+            tetangga atau customer yang AC-nya kotor.
           </li>
-          <li style="margin-bottom: 15px">
-            <strong>PANEN:</strong> Setelah kerjaan beres,
-            <strong>Notifikasi WA masuk</strong>, Poin bertambah,
-            <strong>Cuan cair di hari Jumat!</strong>
+          <li>
+            <strong>Hasilnya:</strong> Tiap 1 customer yang order (min 2 unit),
+            Abang dapat <strong>Rp 50.000</strong>. Cair tiap Jumat.
           </li>
         </ol>
 
-        
-        <div class="yellow-box" style="margin-top: 30px">
-          Aturan Main (Biar Sama-Sama Enak) :
-        </div>
-
-        <ul style="margin: 20px 0; padding-left: 20px; list-style: none">
-          <li style="margin-bottom: 15px">
-            <strong>• 1 Customer = 1 Kali Komisi:</strong> Kamu dapat poin dari
-            customer BARU yang belum pernah pakai FROST. (Gak bisa double claim
-            ya!).
-          </li>
-          <li style="margin-bottom: 15px">
-            <strong>• Minimal Order:</strong> Customer wajib order minimal Cuci 2
-            Unit AC (Atau senilai jasa setara).
-          </li>
-          <li style="margin-bottom: 15px">
-            <strong>• Syarat Pencairan Tunai:</strong> Kumpulkan minimal
-            <strong>10 Poin (Rp 500.000)</strong> untuk pencairan tunai di hari
-            Jumat.
-          </li>
-          <li style="margin-bottom: 15px">
-            <strong>• Belum sampai 10 Poin?</strong> Tenang, poin GAK HANGUS! Bisa
-            ditabung atau ditukar Cuci AC
-            <strong>Gratis (1 Poin = 1 Unit AC)</strong>.
-          </li>
-        </ul>
-
-     
-      <div class="yellow-box" style="margin-top: 30px">
-        Kenapa Orang Bakal Mau Pake Jasa<br />FROST?
-      </div>
-
-      <p
-        style="
-          text-align: center;
-          font-style: italic;
-          margin: 15px 0;
-          font-size: 14px;
-        "
-      >
-        (Biar Kamu Pede Nawarinnya)
-      </p>
-
-      <p style="margin-bottom: 15px; font-size: 14px">
-        FROST bukan tukang AC abal-abal. ⭐
-        <strong>Teknisi Jujur & Amanah:</strong> Tidak ada "tembak harga" atau
-        tipu-tipu freon. ⭐ <strong>Profesional:</strong> Teknisi bersaragam,
-        wangi, dan sopan (No Smoking). ⭐ <strong>Bergaransi:</strong> Kerjaan
-        gak beres? Kami balik lagi <strong>GRATIS</strong>.
-      </p>
-
-      
-      <div style="margin-top: 40px; text-align: center">
-        <p style="font-size: 24px; font-weight: bold; margin-bottom: 20px">
-          DAFTAR SEKARANG !!
+        <p class="intro-text">
+          Kita yang capek nyuci AC-nya, Abang yang dapat komisinya. Adil kan?
         </p>
 
-        <div class="link-box">
+        <div class="highlight-box">
+          FROST hadir bukan buat <strong>nambah beban</strong> Abang di jalan.
+          Kita cuma nawarin peluang kecil : Ada AC kotor di rumah customer?
+          Infokan ke kita. <strong>Abang dapat Rp 50.000</strong>. Itu aja.
+        </div>
+
+        <p class="intro-text">
+          Mungkin Abang mikir, <em>"Ah, saya gak jago jualan."</em> Tenang,
+          Bang.
+          <span class="highlight"
+            >Abang bukan gak bisa, abang cuma belum nemu caranya</span
+          >. Di sini, <strong>gak harus jago dulu buat mulai</strong>. Cukup
+          bermodal "mata jeli" liat AC tetangga, sisanya sistem kita yang urus.
+        </p>
+
+        <p class="intro-text">
+          <strong>Ini bukan komitmen besar, tapi awal yang tepat buat</strong>
+          nambahin uang bensin harian tanpa harus lembur gila-gilaan.
+          <strong>Aku gak ngejar, tapi aku siap bantu</strong>. Kalau Abang
+          merasa Rp 50.000 per orang itu lumayan buat nambal kebutuhan dapur,
+          pintunya terbuka.
+        </p>
+
+        <p class="intro-text">
+          <strong>Keputusan tetap di abang.</strong> Kalau mau tanya-tanya dulu
+          santai, silakan chat admin. Gak jadi daftar pun gak masalah, kita
+          tetap sedulu.
+        </p>
+
+        <p class="intro-text" style="margin-top: 25px">
+          Mau langsung daftar atau tanya2 dulu klik tombol dibawah ini :
+        </p>
+      </div>
+
+        <div class="btn-container">
           <a
-            href="https://wa.me/6285166662711?text=Assalamu'alaikum%20ka%2C%20saya%20mau%20daftar%20Affiliate%20 "
+            href="https://wa.me/6285166662711?text=Assalamu'alaikum%20ka%2C%20saya%20mau%20daftar%20Affiliate%20"
             target="_blank"
-            >DAFTAR DISINI
+            class="btn btn-primary"
+          >
+            MAU DAFTAR SEKARANG
           </a>
-          <div class="link-note"></div>
+          <a
+            href="https://wa.me/6285166662711?text=Assalamu'alaikum%20ka%2C%20saya%20mau%20tanya-tanya%20dulu%20tentang%20Affiliate%20"
+            target="_blank"
+            class="btn btn-secondary"
+          >
+            Saya Mau Tanya Dulu
+          </a>
         </div>
-      </div>
-
-    
-
-    
-      <div
-        style="
-          background: #4caf50;
-          color: white;
-          padding: 15px 20px;
-          font-size: 22px;
-          font-weight: bold;
-          text-align: center;
-          margin: 40px -30px 30px -30px;
-          border-radius: 0;
-        "
-      >
-        Masih Bingung? Baca Ini Dulu, Bang!
-      </div>
-
-      
-      <div style="margin: 30px 0">
-       
-        <div style="margin-bottom: 25px">
-          <p style="font-weight: bold; margin-bottom: 8px">
-            Q: Daftarnya bayar gak?
-          </p>
-          <p style="margin-left: 15px; font-size: 14px">
-            <strong>A: GRATIS 100%.</strong> Gak ada biaya pendaftaran
-            sepeserpun. Modal HP sama kuota doang.
-          </p>
-        </div>
-
-        
-        <div style="margin-bottom: 25px">
-          <p style="font-weight: bold; margin-bottom: 8px">
-            Q: Kalau customer cuma cuci 1 AC, saya dapat komisi gak?
-          </p>
-          <p style="margin-left: 15px; font-size: 14px">
-            <strong>A: Maaf belum dapet, Bang.</strong> Syarat komisi cair itu
-            minimal customer order cuci <strong>2 Unit AC</strong>. Jadi pastiin
-            tetangganya punya minimal 2 AC ya!
-          </p>
-        </div>
-
-       
-        <div style="margin-bottom: 25px">
-          <p style="font-weight: bold; margin-bottom: 8px">
-            Q: Kalau belum sampe 10 Poin, hangus gak poinnya?
-          </p>
-          <p style="margin-left: 15px; font-size: 14px">
-            <strong>A: GAK HANGUS!</strong> Poin aman tersimpan di akun Abang.
-            Bisa dikumpulin dulu sampe 10 buat dicairin tunai, atau kalau udah
-            gerah, tuker 1 poin buat cuci AC rumah sendiri aja!
-          </p>
-        </div>
-
-     
-        <div style="margin-bottom: 25px">
-          <p style="font-weight: bold; margin-bottom: 8px">
-            Q: Duitnya ditransfer kemana?
-          </p>
-          <p style="margin-left: 15px; font-size: 14px">
-            <strong>A: Bebas!</strong> Bisa ke Rekening Bank (BCA/Mandiri/BRI
-            dll) atau E-Wallet (DANA/OVO/Gopay).
-          </p>
-        </div>
-
-        
-        <div style="margin-bottom: 25px">
-          <p style="font-weight: bold; margin-bottom: 8px">
-            Q: Kalau tetangga saya order lagi bulan depan, saya dapat lagi gak?
-          </p>
-          <p style="margin-left: 15px; font-size: 14px">
-            <strong>A: Enggak, Bang.</strong> Komisi cuma berlaku untuk
-            <strong>Order Pertama (Customer Baru)</strong>. Jadi tugas Abang
-            cari orang baru terus biar cuan ngelir terus!
-          </p>
-        </div>
-
-   
-        <div style="margin-bottom: 25px">
-          <p style="font-weight: bold; margin-bottom: 8px">
-            Q: Taunya darimana kalau poin saya udah masuk?
-          </p>
-          <p style="margin-left: 15px; font-size: 14px">
-            <strong>A: Canggih system kita, Bang.</strong> Begitu teknisi kelar
-            kerja, Abang langsung dapet <strong>notifikasi WA</strong> otomatis.
-            Bisa cek saldo juga di aplikasi. Transparan!
-          </p>
-        </div>
-
-    
-        <div style="margin-bottom: 25px">
-          <p style="font-weight: bold; margin-bottom: 8px">
-            Q: Area mana aja yang bisa dilayani FROST?
-          </p>
-          <p style="margin-left: 15px; font-size: 14px">
-            <strong>A: Saat ini khusus area Tangerang Selatan</strong> dan
-            sekitarnya (Radius 10 km dari Serpong).
-          </p>
-        </div>
-
-      
-        <div style="margin-bottom: 25px">
-          <p style="font-weight: bold; margin-bottom: 8px">
-            Q: Aman gak nih? Nanti teknisinya nipu customer saya?
-          </p>
-          <p style="margin-left: 15px; font-size: 14px">
-            <strong>A: DIJAMIN AMAN.</strong> Teknisi FROST itu teknisi pilihan,
-            jujur, dan syariah. Kalau sampe ada komplain, kantor kita jelas,
-            garansi aktif. Nama baik Abang aman sama kita.
-          </p>
-        </div>
-      </div>
-
-      
-      <div
-        style="
-          background: #4caf50;
-          color: white;
-          padding: 20px;
-          text-align: center;
-          font-size: 24px;
-          font-weight: bold;
-          margin: 40px 0 30px 0;
-          border-radius: 8px;
-        "
-      >
-        TUNGGU APA LAGI?
-      </div>
-
-     
-      <p
-        style="
-          text-align: center;
-          font-size: 15px;
-          margin-bottom: 20px;
-          line-height: 1.8;
-        "
-      >
-        <strong>Kuota Affiliate Terbatas.<br /></strong> Kami hanya mencari
-        partner yang serius mau cari duit tambahan. <br /><br />
-        Jangan sampai teman satu tongkrongan atau rekan security shift sebelah
-        Kamu duluan yang garap lahan basah ini.
-      </p>
-
-      
-      <p
-        style="
-          text-align: center;
-          font-weight: bold;
-          font-size: 16px;
-          margin: 25px 0 15px 0;
-        "
-      >
-        Klik Tombol di Bawah Untuk Daftar GRATIS Sekarang!
-      </p>
-
-      <div class="link-box" style="margin-bottom: 30px">
-        <a
-          href="https://wa.me/6285166662711?text=Assalamu'alaikum%20ka%2C%20saya%20mau%20daftar%20Affiliate%20 "
-          target="_blank"
-          >DAFTAR DISINI
-        </a>
-        <div class="link-note"></div>
       </div>
     </div>
-    -->
   </body>
 </html>

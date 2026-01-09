@@ -384,7 +384,7 @@ const ScheduledBookings = () => {
 
   const sendWhatsAppConfirmation = async (booking: Booking) => {
     try {
-      const message = `Halo ${booking.nama}, booking Anda telah dikonfirmasi!\n\nDetail:\n📅 Tanggal: ${booking.tanggal_kunjungan}\n⏰ Waktu: ${booking.waktu_kunjungan}\n🏠 Alamat: ${booking.alamat}\n🔧 Layanan: ${booking.jenis_layanan}\n\nTerima kasih telah mempercayai AFC Service!`;
+      const message = `Halo ${booking.nama}, booking Anda telah dikonfirmasi!\n\nDetail:\n📅 Tanggal: ${booking.tanggal_kunjungan}\n⏰ Waktu: ${booking.waktu_kunjungan}\n🏠 Alamat: ${booking.alamat}\n🔧 Layanan: ${booking.jenis_layanan}\n\nTerima kasih telah mempercayai FROST Service!`;
 
       // Redirect to WhatsApp Web (manual)
       const whatsappUrl = `https://wa.me/${
@@ -459,7 +459,7 @@ const ScheduledBookings = () => {
 
       const formattedDate = formatDate(newDate);
 
-      const message = `*RESCHEDULE KUNJUNGAN TEKNISI AFC*
+      const message = `*RESCHEDULE KUNJUNGAN TEKNISI FROST*
 *Kode Booking* : ${booking.booking_id || "N/A"}
 
 Yth. Bapak/Ibu *${booking.nama}*

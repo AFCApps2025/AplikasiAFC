@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panduan Teknis & Formulir Partner Resmi FROST</title>
+    <meta
+      name="description"
+      content="FROST Affiliate: Jalur Cepat Ubah Info Jadi Duit. Panduan lengkap program affiliate, komisi, dan cara kerja."
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://i.pinimg.com/736x/f0/7c/8d/f07c8da0a8e8a5ef3667f85a53f766ea.jpg"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #f8f8f8;
+        line-height: 1.6;
+        color: #1a1a1a;
+      }
+
+      .container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Header Section */
+      .header {
+        text-align: center;
+        padding: 30px 20px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .header h1 {
+        font-size: 24px;
+        font-weight: 900;
+        line-height: 1.3;
+        margin-bottom: 10px;
+      }
+
+      .header .tagline {
+        font-size: 16px;
+        font-weight: 600;
+        font-style: italic;
+        opacity: 0.95;
+      }
+
+      /* Update Section */
+      .update-section {
+        background: #fff3cd;
+        border-left: 5px solid #ff6b6b;
+        padding: 20px 25px;
+        margin: 0;
+      }
+
+      .update-section h2 {
+        font-size: 18px;
+        font-weight: 900;
+        margin-bottom: 12px;
+        color: #d63031;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .update-section ol {
+        margin-left: 20px;
+        font-size: 14px;
+        line-height: 1.8;
+      }
+
+      .update-section strong {
+        font-weight: 700;
+        color: #000;
+      }
+
+      /* Content Section */
+      .content {
+        padding: 30px 30px;
+      }
+
+      .section {
+        margin-bottom: 35px;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 900;
+        margin-bottom: 15px;
+        color: #2d3436;
+        border-left: 4px solid #667eea;
+        padding-left: 12px;
+      }
+
+      .section-text {
+        font-size: 14px;
+        line-height: 1.8;
+        margin-bottom: 15px;
+        text-align: justify;
+      }
+
+      /* Lists */
+      .bullet-list {
+        margin: 15px 0;
+        padding-left: 0;
+        list-style: none;
+      }
+
+      .bullet-list li {
+        margin-bottom: 12px;
+        font-size: 14px;
+        line-height: 1.7;
+        position: relative;
+        padding-left: 25px;
+      }
+
+      .bullet-list li::before {
+        content: "•";
+        position: absolute;
+        left: 8px;
+        font-weight: 700;
+        color: #667eea;
+        font-size: 18px;
+      }
+
+      .sub-list {
+        margin-top: 8px;
+        padding-left: 20px;
+        font-size: 13px;
+      }
+
+      .sub-list li {
+        margin-bottom: 5px;
+      }
+
+      /* Highlight Box */
+      .highlight-box {
+        background: #e8f5e9;
+        border-left: 4px solid #4caf50;
+        padding: 15px 20px;
+        margin: 20px 0;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .warning-box {
+        background: #fff3e0;
+        border-left: 4px solid #ff9800;
+        padding: 15px 20px;
+        margin: 20px 0;
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      /* Table */
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+        font-size: 14px;
+      }
+
+      .info-table td {
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+      }
+
+      .info-table td:first-child {
+        font-weight: 700;
+        width: 40%;
+        background: #f5f5f5;
+      }
+
+      /* FAQ */
+      .faq-item {
+        margin-bottom: 18px;
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: 8px;
+      }
+
+      .faq-question {
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 8px;
+        color: #2d3436;
+      }
+
+      .faq-answer {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #555;
+      }
+
+      /* CTA Section */
+      .cta-section {
+        padding: 40px 30px;
+        background: #fafafa;
+        text-align: center;
+        border-top: 2px solid #e0e0e0;
+      }
+
+      .cta-section h3 {
+        font-size: 20px;
+        font-weight: 900;
+        margin-bottom: 15px;
+        color: #2d3436;
+      }
+
+      .cta-section p {
+        font-size: 14px;
+        margin-bottom: 25px;
+        color: #666;
+        line-height: 1.7;
+      }
+
+      /* Green Button */
+      .btn-register {
+        display: inline-block;
+        background: linear-gradient(135deg, #4caf50, #2e7d32);
+        color: white;
+        font-size: 18px;
+        font-weight: 900;
+        padding: 18px 50px;
+        text-decoration: none;
+        border-radius: 50px;
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-register:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+      }
+
+      .btn-register:active {
+        transform: translateY(-1px);
+      }
+
+      /* Footer */
+      .footer {
+        background: #2d3436;
+        color: white;
+        text-align: center;
+        padding: 25px 20px;
+      }
+
+      .footer p {
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .footer a {
+        color: #4caf50;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      /* Responsive */
+      @media (max-width: 640px) {
+        .header h1 {
+          font-size: 20px;
+        }
+
+        .header .tagline {
+          font-size: 14px;
+        }
+
+        .content {
+          padding: 25px 20px;
+        }
+
+        .section-title {
+          font-size: 16px;
+        }
+
+        .cta-section {
+          padding: 30px 20px;
+        }
+
+        .btn-register {
+          font-size: 16px;
+          padding: 16px 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>PANDUAN TEKNIS & FORMULIR PARTNER RESMI</h1>
+        <div class="tagline">
+          "FROST Affiliate: Jalur Cepat Ubah Info Jadi Duit."
+        </div>
+      </div>
+
+      <!-- Update Section -->
+      <div class="update-section">
+        <h2>🔥 UPDATE PENTING (BACA DULU BANG!)</h2>
+        <p style="margin-bottom: 10px; font-size: 14px">
+          Mulai hari ini, aturan main kita bikin makin simpel biar Abang makin
+          gampang cari cuan:
+        </p>
+        <ol>
+          <li>
+            <strong>HAPUS BATAS MINIMAL:</strong> Gak perlu nunggu 10 poin.
+            Dapet 1 Customer pun (50rb), komisi sudah bisa diklaim!
+          </li>
+          <li>
+            <strong>REKENING MENYUSUL:</strong> Gak perlu takut kasih data
+            rekening pas daftar. Rekening baru diminta nanti pas Abang mau klaim
+            duitnya.
+          </li>
+        </ol>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <!-- Section 1 -->
+        <div class="section">
+          <h2 class="section-title">
+            1. KENAPA SIH HARUS GABUNG? (INI ALASAN MASUK AKALNYA)
+          </h2>
+          <p class="section-text">
+            Coba Abang pikir pake logika pedagang sebentar. Abang tiap hari
+            keliling, itu sebenernya Abang lagi pegang
+            <strong>"Aset Mahal"</strong>, lho:
+          </p>
+          <ul class="bullet-list">
+            <li>
+              <strong>Buat Abang Ojol/Kurir:</strong> Tiap nganter
+              paket/makanan, Abang ketemu pemilik rumah. Liat AC mereka kotor?
+              Itu peluang duit. Paket yang Abang anter itu cuma satu kali
+              bayaran, tapi AC mereka butuh dicuci rutin.
+            </li>
+            <li>
+              <strong>Buat Abang Security:</strong> Warga yang Abang jagain tiap
+              malem itu target pasar empuk. Mereka pasti butuh AC dingin buat
+              tidur nyenyak.
+            </li>
+            <li>
+              <strong>Buat Warga Umum:</strong> Tetangga kanan-kiri pasti punya
+              AC. Daripada cuma dengerin mesin AC mereka berisik, mending
+              rekomendasiin FROST biar jadi duit.
+            </li>
+          </ul>
+          <div class="highlight-box">
+            <strong>Zero Risk (Nol Risiko):</strong> Abang gak keluar modal
+            sepeserpun. Gak perlu beli stok. Gak perlu sewa ruko. Resiko
+            terburuknya cuma "ditolak", itu doang. Gak ada rugi materi sama
+            sekali.
+          </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="section">
+          <h2 class="section-title">2. HITUNGAN GAJI (TRANSPARAN)</h2>
+          <p class="section-text">
+            Kita main bersih, Bang. Gak ada itungan yang disembunyiin.
+          </p>
+          <ul class="bullet-list">
+            <li>
+              <strong>Komisi Dasar:</strong> Rp 50.000 per Orderan Sukses.
+              <ul class="sub-list">
+                <li>Syarat: Customer order cuci min. 2 Unit AC.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Periode Hitungan (Cut-Off):</strong>
+              <ul class="sub-list">
+                <li>
+                  Batas klaim mingguan adalah hari <strong>KAMIS</strong> jam
+                  23.59 WIB.
+                </li>
+                <li>Lewat jam segitu, masuk gajian minggu depannya ya Bang.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Waktu Gajian:</strong> Setiap hari <strong>JUMAT</strong>.
+            </li>
+            <li>
+              <strong>Biaya Admin Transfer (PENTING):</strong>
+              <ul class="sub-list">
+                <li>
+                  <strong>Bank Syariah Indonesia (BSI):</strong> GRATIS (Rp 0).
+                  Utuh 50rb masuk.
+                </li>
+                <li>
+                  <strong>Bank Lain (BCA/Mandiri/BRI/dll):</strong> Kena potong
+                  biaya admin bank (Rp 2.500 - Rp 6.500) tergantung bank
+                  penerima. Ini potongan dari Bank ya Bang, bukan dari FROST.
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="section">
+          <h2 class="section-title">3. CARA KERJA (SOP LAPANGAN)</h2>
+          <p class="section-text">
+            Ikuti langkah ini biar duitnya lancar masuk kantong:
+          </p>
+
+          <div style="margin-bottom: 15px">
+            <strong style="display: block; margin-bottom: 8px; font-size: 15px"
+              >LANGKAH 1: DAFTAR (Cuma Nama & WA)</strong
+            >
+            <p class="section-text">
+              Isi formulir di bawah. Gak perlu ribet. Cukup modal Nama & WA
+              aktif aja.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="display: block; margin-bottom: 8px; font-size: 15px"
+              >LANGKAH 2: DAPAT KODE/LINK</strong
+            >
+            <p class="section-text">
+              Setelah daftar, Abang dapet Link Khusus. Simpan link ini! Ini
+              "senjata" Abang buat cari duit.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="display: block; margin-bottom: 8px; font-size: 15px"
+              >LANGKAH 3: SEBAR & INFO</strong
+            >
+            <p class="section-text">
+              Saat Abang ketemu customer/tetangga, perkenalkan diri sebagai
+              Mitra/Affiliate Resmi FROST.
+            </p>
+            <div class="warning-box">
+              <em
+                >"Bu, ini paketnya. Oiya Bu, saya juga Partner Resmi FROST AC.
+                Kalau AC Ibu kotor, pesen lewat saya aja, teknisinya jujur &
+                amanah."</em
+              >
+              <br /><br />
+              Kasih Link atau Barcode Abang.
+            </div>
+          </div>
+
+          <div style="margin-bottom: 15px">
+            <strong style="display: block; margin-bottom: 8px; font-size: 15px"
+              >LANGKAH 4: PANEN & KLAIM</strong
+            >
+            <p class="section-text">
+              Kalau customer itu order & bayar lunas, Abang dapet notifikasi.
+              Nah, baru deh di situ Abang kasih data rekening buat kita transfer
+              hari Jumat.
+            </p>
+          </div>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="section">
+          <h2 class="section-title">4. SYARAT & KETENTUAN (FAIR PLAY)</h2>
+          <p class="section-text">
+            Biar rezeki kita sama-sama berkah & panjang, tolong patuhi ini:
+          </p>
+          <ol style="margin-left: 20px; font-size: 14px; line-height: 1.8">
+            <li>
+              <strong>Berlaku untuk Customer Baru:</strong> Komisi cair untuk
+              customer yang belum pernah terdaftar di database FROST.
+            </li>
+            <li>
+              <strong>Validasi Order:</strong> Komisi dihitung SAH jika teknisi
+              sudah selesai bekerja dan customer sudah bayar lunas. (Kalau
+              customer cancel, komisi hangus).
+            </li>
+            <li>
+              <strong>Disiplin Waktu:</strong> Ingat batas klaim Kamis 23.59
+              WIB. Jangan mepet-mepet ya Bang.
+            </li>
+          </ol>
+        </div>
+
+        <!-- Section 5 -->
+        <div class="section">
+          <h2 class="section-title">5. FAQ (PERTANYAAN TEKNIS)</h2>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Q: Bang, saya cuma dapet 1 orang minggu ini, tetep ditransfer gak?
+            </div>
+            <div class="faq-answer">
+              <strong>A: DITRANSFER!</strong> Sesuai aturan baru, gak ada
+              minimal poin. Dapet 1 orang (50rb) pun langsung kita transfer.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              Q: Saya gak punya rekening BSI, kepotong dong?
+            </div>
+            <div class="faq-answer">
+              <strong>A:</strong> Iya Bang, kena biaya admin bank biasa (biaya
+              BI Fast/Online). Kalau mau utuh tanpa potongan, bisa pake rekening
+              BSI.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">Q: Rekeningnya harus punya sendiri?</div>
+            <div class="faq-answer">
+              <strong>A:</strong> Pas nanti mau klaim, usahakan rekening
+              sendiri. Kalau kepepet pake rekening istri/anak boleh, asal
+              konfirmasi jelas ke admin pas klaim.
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6 -->
+        <div class="section">
+          <h2 class="section-title">6. FORMULIR PENDAFTARAN CEPAT</h2>
+          <p class="section-text">
+            Siap nambah penghasilan minggu ini? Isi data simpel di bawah ini
+            buat dapetin Link Affiliate.
+          </p>
+          <p class="section-text"><strong>Data yang dibutuhkan:</strong></p>
+          <ol style="margin-left: 20px; font-size: 14px; line-height: 1.8">
+            <li>Nama Lengkap (Sesuai KTP)</li>
+            <li>No. WhatsApp Aktif</li>
+          </ol>
+          <p class="section-text" style="margin-top: 10px; font-style: italic">
+            (Udah, itu doang. Gak perlu isi profesi, rekening nyusul pas
+            gajian!)
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="cta-section">
+        <h3>Siap Mulai Cari Cuan?</h3>
+        <p>
+          Klik tombol di bawah untuk daftar sebagai Partner Resmi FROST.<br />
+          Dapatkan Link Affiliate Anda dan mulai hasilkan Rp 50.000 per
+          customer!
+        </p>
+        <a
+          href="https://aqshafreshncool.com/pages/affiliate.html"
+          class="btn-register"
+          >DAFTAR JADI PARTNER SEKARANG</a
+        >
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>
+          <strong>Masih Penasaran atau Ada yang Bingung?</strong><br />
+          Jangan sungkan, langsung chat Admin kita (Manusia asli, bukan robot):
+        </p>
+        <p style="margin-top: 10px">
+          👉 WA Admin:
+          <a
+            href="https://wa.me/6285166662711?text=Assalamu'alaikum%20ka%2C%20saya%20mau%20tanya%20tentang%20program%20Affiliate"
+            target="_blank"
+            >0851-6666-2711</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

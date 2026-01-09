@@ -659,10 +659,10 @@
                 <li>
                   Poin dapat ditukar dengan cuci AC GRATIS (1 poin 1 unit AC)
                 </li>
-                <li>
+                <!-- <li>
                   Jumlah poin yang bisa diklaim/dicairkan dalam bentuk tunai
                   minimal berjumlah 10 poin
-                </li>
+                </li> -->
                 <li>Pembayaran/pencairan poin dilakukan setiap hari Jumat</li>
               </ul>
             </div>
@@ -1106,20 +1106,21 @@
             const message = `Assalamualaikum 
 
 Selamat ya *${namaPIC}* dari *${namaUsaha}*!
-Alhamdulillah, perusahaan/organisasi Anda resmi bergabung sebagai *Affiliate Corporate FROST* dengan ID: *${partnerId}*
+Alhamdulillah, Anda resmi bergabung sebagai *FROST Affiliate Corporate* dengan ID: *${partnerId}*
 
 Mulai sekarang, setiap langkah kecil Anda bisa jadi jalan rejeki halal & keberkahan.
 Setiap kali Anda rekomendasikan layanan FROST dan ada customer yang closing, Anda akan dapat:
 
 💰 Komisi Rp 50.000 atau gratis cuci 1 unit AC.
-🎁 Customer yang Anda bawa juga langsung dapat bonus Free Cek/Pemeriksaan Unit senilai Rp 150.000 + promo cuci 2 gratis 1 (berlaku kelipatan).
+🎁 Customer yang Anda bawa juga langsung dapat bonus GRATIS Cek/Pemeriksaan Unit senilai Rp 150.000 + promo cuci 2 gratis 1 (berlaku kelipatan).
 
 Berikut *link affiliate corporate* Anda, silakan sebarkan ke relasi bisnis, partner, atau komunitas:
 🔗 *${affiliateLink}*
 
 Raih keberkahan bersama FROST dengan menebarkan manfaat melalui rekomendasi sederhana ini.
 
-*FROST*`;
+*FROST*
+*Dinginnya Jujur*`;
 
             const whatsappResponse = await fetch(
               "https://nonleaking-cameron-eagerly.ngrok-free.dev/api/send",
