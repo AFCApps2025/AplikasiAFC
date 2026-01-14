@@ -17,6 +17,31 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Booking Service AC - Profesional" />
+    <meta
+      property="og:description"
+      content="Layanan AC Profesional De Latinos & Sekitarnya - Booking sekarang untuk service AC terbaik"
+    />
+    <meta
+      property="og:image"
+      content="https://i.pinimg.com/736x/f0/7c/8d/f07c8da0a8e8a5ef3667f85a53f766ea.jpg"
+    />
+    <meta property="og:url" content="https://frostac.com/booking" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Booking Service AC - Profesional" />
+    <meta
+      name="twitter:description"
+      content="Layanan AC Profesional De Latinos & Sekitarnya - Booking sekarang untuk service AC terbaik"
+    />
+    <meta
+      name="twitter:image"
+      content="https://i.pinimg.com/736x/f0/7c/8d/f07c8da0a8e8a5ef3667f85a53f766ea.jpg"
+    />
     <style>
       :root {
         --primary-green: #10b981;
@@ -1967,6 +1992,38 @@ _Layanan AC Profesional De Latinos & Sekitarnya_`;
             customerMessage
           );
           console.log("Customer notification result:", customerSuccess);
+
+          // Send admin notification to +62 851-7539-2159
+          const adminPhone = "6285175392159";
+          const adminMessage = `📋 *BOOKING BARU MASUK*
+
+*Booking ID: ${bookingId}*
+
+👤 *Customer:* ${customerName}
+📞 *No HP:* ${customerPhone}
+📅 *Tanggal:* ${formattedDate}
+🕐 *Waktu:* ${waktuText}
+🏠 *Alamat:* ${address}
+
+🛠️ *Detail Layanan:*
+${serviceDetails}
+
+*Total Unit: ${unitCount} unit*${notesInfo}
+
+${
+  referralCode && referralCode.trim() !== ""
+    ? `🎁 *Kode Referral:* ${referralCode}\n\n`
+    : ""
+}✅ Harap segera follow up customer ini.
+
+*FROST - Admin Notification*`;
+
+          console.log("Sending admin notification to:", adminPhone);
+          const adminSuccess = await sendWhatsAppMessage(
+            adminPhone,
+            adminMessage
+          );
+          console.log("Admin notification result:", adminSuccess);
 
           // If there's a referral code, send notification to affiliate partner
           let partnerSuccess = true;
